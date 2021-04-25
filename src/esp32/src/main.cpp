@@ -15,8 +15,8 @@ extern "C" {
   #include "freertos/FreeRTOS.h"
   #include "freertos/timers.h"
 }
-#include <AsyncMqttClient.h>
 
+#include <AsyncMqttClient.h>
 
 // Credentials for connecting to the network
 #define WIFI_SSID "MileFabi"
@@ -118,7 +118,7 @@ void setup() {
   // Initialize temperature sensor
   pinMode(ledPin, OUTPUT);
   
-  mqttReconnectTimer = xTimerCreate("mqttTimer", pdMS_TO_TICKS(2000), pdFALSE 		(void*)0,reinterpret_cast<TimerCallbackFunction_t>(connectToMqtt));
+  mqttReconnectTimer = xTimerCreate("mqttTimer", pdMS_TO_TICKS(2000), pdFALSE, (void*)0,reinterpret_cast<TimerCallbackFunction_t>(connectToMqtt));
   wifiReconnectTimer = xTimerCreate("wifiTimer", pdMS_TO_TICKS(2000), pdFALSE, (void*)0, reinterpret_cast<TimerCallbackFunction_t>(connectToWifi));
 
   WiFi.onEvent(WiFiEvent);

@@ -25,7 +25,7 @@
 #include "SD_MMC.h"            // SD Card ESP32
 #include "soc/soc.h"           // Disable brownour problems
 #include "soc/rtc_cntl_reg.h"  // Disable brownour problems
-#include "dl_lib.h"
+//#include <dl_lib.h>
 #include "driver/rtc_io.h"
 #include <EEPROM.h>            // read and write from flash memory
 
@@ -135,7 +135,7 @@ void setup() {
   } 
   else {
     file.write(fb->buf, fb->len); // payload (image), payload length
-    Serial.printf("Saved file to path: %s\n", path.c_str());
+    Serial.printf("Archivo guradado en: %s\n", path.c_str());
     EEPROM.write(0, pictureNumber);
     EEPROM.commit();
   }
@@ -151,7 +151,7 @@ void setup() {
   Serial.println("Going to sleep now");
   delay(2000);
   esp_deep_sleep_start();
-  Serial.println("This will never be printed");
+  Serial.println("Esto nunca será impreso");
 }
 
 void loop() {
