@@ -1,0 +1,56 @@
+################################################################################# 
+# Author:FS
+# Date: 2021
+# Copyright: Agustin Bassi (https://github.com/agustinBassi/mq-connection)
+# License: MIT
+# Project: MQTT Hub
+# Brief: These containers act as a MQTT Hub for HBD Final Project.
+#
+# How to test the MQTT connection to and from the broker:
+#
+#   - docker exec -it mosquitto mosquitto_sub -t "#"
+#   - docker exec -it mosquitto mosquitto_pub -t "/test/topic" -m "Test message"
+#
+#################################################################################
+  
+version: '3'
+
+services:
+
+  mosquitto:
+    image:                  eclipse-mosquitto:latest
+    hostname:               mosquitto
+    container_name:         mosquitto
+
+    volumes:
+      -                     ./mqtt-broker/config:/mosquitto/config
+      -                     ./mqtt-broker/auth:/etc/mosquitto/
+
+    networks:
+      -                     mqtt-host-network 
+    expose:
+      -                     "1883"
+      -                     "8883"
+      -                     "9001"
+    ports:
+      -                     "1883:1883"
+      -                     "8883:8883"
+      -                     "9001:9001"
+
+  web-client:
+
+    image:                  httpd:2.4
+    hostname:               web-client
+    container_name:         web-client
+
+    volumes:
+        -                   ./mqtt-client-web:/usr/local/apache2/htdocs/
+    networks:
+      -                     mqtt-host-network 
+    ports:
+      -                     "5001:80"
+
+networks:
+  
+  mqtt-host-network:
+    driver:                 bridge
