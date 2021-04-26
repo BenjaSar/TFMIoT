@@ -37,20 +37,62 @@ services:
       -                     "8883:8883"
       -                     "9001:9001"
 
-  web-client:
+  node-red:
+    depends_on:             
+      -                      mosquitto
 
-    image:                  httpd:2.4
-    hostname:               web-client
-    container_name:         web-client
+    image:                   nodered/node-red:latest
+
+    environment:
+      -                      TZ=America/Argentina/Buenos_Aires  
+    volumes:
+      -                      ./node-red:/data
+    networks:
+      -                      mqtt-host-network 
+    ports:
+      -                      "1880:1880"
+
+  postgres:
+    depends_on:             
+      -                      mosquitto
+    
+    container_name:          postgres
+
+    image:                   postgres:latest # use latest official postgres version
+    
+    environment:
+      POSTGRES_DB:           HBD  
+      POSTGRES_USER:         postgres                                     
+      POSTGRES_PASSWORD:     12345
+      TZ:                    America/Argentina/Buenos_Aires  
 
     volumes:
-        -                   ./mqtt-client-web:/usr/local/apache2/htdocs/
+      -                     ./db/dumps:/docker-entrypoint-initdb.d
+      -                     ./db/data :/var/lib/postgresql/data/ # persist data even if container shuts down
     networks:
-      -                     mqtt-host-network 
-    ports:
-      -                     "5001:80"
+      -                      postgres-network   
+    ports:  
+      -                      "5432:5432"
 
+  pgAdmin:
+    
+    depends_on:             
+      -                      postgres
+    
+    image:                   dpage/pgadmin4:latest
+    
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@linuxhint.com
+      PGADMIN_DEFAULT_PASSWORD: 12345
+      PGADMIN_LISTEN_PORT:   5050
+        
+    ports:
+      -                       "5050:5050"
+      
 networks:
   
   mqtt-host-network:
-    driver:                 bridge
+    driver:                  bridge
+
+  postgres-network:
+    driver:                  bridge
