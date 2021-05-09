@@ -13,7 +13,7 @@
 #
 #################################################################################
   
-version: '3'
+version: '3.8'
 
 services:
 
@@ -67,10 +67,9 @@ services:
       TZ:                    America/Argentina/Buenos_Aires  
 
     volumes:
-      -                     ./db/dumps:/docker-entrypoint-initdb.d
-      -                     ./db/data :/var/lib/postgresql/data/ # persist data even if container shuts down
-    networks:
-      -                      postgres-network   
+                            #Copy the sql script to create tables
+      -                     ./db/dumps/tables.sql:/docker-entrypoint-initdb.d/tables.sql
+      -                     ./db/data:/var/lib/postgresql/data/ # persist data even if container shuts down 
     ports:  
       -                      "5432:5432"
 
@@ -80,11 +79,13 @@ services:
       -                      postgres
     
     image:                   dpage/pgadmin4:latest
+
+    restart:                  always
     
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@linuxhint.com
+      PGADMIN_DEFAULT_EMAIL:    admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: 12345
-      PGADMIN_LISTEN_PORT:   5050
+      PGADMIN_LISTEN_PORT:      5050
         
     ports:
       -                       "5050:5050"
@@ -94,5 +95,3 @@ networks:
   mqtt-host-network:
     driver:                  bridge
 
-  postgres-network:
-    driver:                  bridge
