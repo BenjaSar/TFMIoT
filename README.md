@@ -11,7 +11,10 @@ Autor: FS - 2021
 ---
 
 1. [Introduccion General](#Introduccion)
-2. [Licencia](#Licencia)
+2. [Arquitectura del HBD](#Arquitectura)
+3. [Organización del proyecto](#Organizacion)
+4. [Licencia](#Licencia)
+5. [Agradecimientos](#Agradecimientos)
 
 ### Organización del proyecto
 
@@ -26,8 +29,8 @@ El proyecto se encuentra conformado por la siguiente estructura de directorios y
    │   │   │        └── dumps              # Directorio de estructuras de la BD
    │   │   │
    │   │   ├── mqtt-broker                 # Directorio para el servicio MQTT
-   │   │   |   ├── broker                  # Directorio para los archivos del broker MQTT
-   │   │   |   └── index.js                # Código base del servidor de Express
+   │   │   │   ├── broker                  # Directorio para los archivos del broker MQTT
+   │   │   │   └── index.js                # Código base del servidor de Express
    │   │   └──docker-compose.yml           # Archivo YAML de Docker
    │   │
    │   └── front-end                       # Directorio para el frontend de la aplicación del servidor web

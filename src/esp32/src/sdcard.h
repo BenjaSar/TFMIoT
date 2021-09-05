@@ -17,6 +17,22 @@ RTC_DATA_ATTR int readingID = 0;
 String dataMessage;
 float temp;
 
+// Append data to the SD card (DON'T MODIFY THIS FUNCTION)
+void appendFile(fs::FS &fs, const char * path, const char * message) {
+  Serial.printf("Appending to file: %s\n", path);
+
+  File file = fs.open(path, FILE_APPEND);
+  if(!file) {
+    Serial.println("Failed to open file for appending");
+    return;
+  }
+  if(file.print(message)) {
+    Serial.println("Message appended");
+  } else {
+    Serial.println("Append failed");
+  }
+  file.close();
+}
 
 //Initializing the microSD card module
 extern void logSDCard(){
@@ -45,20 +61,7 @@ extern void initSD(){
     return; // init failed
     }
   }  
-  
-  // If the data.txt file doesn't exist
-  // Create a file on the SD card and write the data labels
-  extern void SDwriteDataLabels(){
-    File file = SD.open("/data.txt");
-    if(!file) {
-      Serial.println("File doens't exist");
-      Serial.println("Creating file...");
-      writeFile(SD, "/data.txt", "Reading ID, Temperature \r\n");
-    } else {
-      Serial.println("File already exists");  
-    }
-    file.close();
-  }
+
 
 // Write to the SD card (DON'T MODIFY THIS FUNCTION)
   void writeFile(fs::FS &fs, const char * path, const char * message) {
@@ -77,22 +80,24 @@ extern void initSD(){
   file.close();
   }
 
-// Append data to the SD card (DON'T MODIFY THIS FUNCTION)
-void appendFile(fs::FS &fs, const char * path, const char * message) {
-  Serial.printf("Appending to file: %s\n", path);
 
-  File file = fs.open(path, FILE_APPEND);
-  if(!file) {
-    Serial.println("Failed to open file for appending");
-    return;
+
+
+  // If the data.txt file doesn't exist
+  // Create a file on the SD card and write the data labels
+  extern void SDwriteDataLabels(){
+    File file = SD.open("/data.txt");
+    if(!file) {
+      Serial.println("File doens't exist");
+      Serial.println("Creating file...");
+      writeFile(SD, "/data.txt", "Reading ID, Temperature \r\n");
+    } else {
+      Serial.println("File already exists");  
+    }
+    file.close();
   }
-  if(file.print(message)) {
-    Serial.println("Message appended");
-  } else {
-    Serial.println("Append failed");
-  }
-  file.close();
-}
+
+
   
 
 

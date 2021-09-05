@@ -26,11 +26,8 @@ extern "C" {
 
 #include "constantsValues.h"
 
-// Mqtt topics
-#define MQTT_PUB_TEMP "esp32/temperature"
-
 // Variables to hold sensor readings
-float temp;
+float temperature;
 int potValue = 0;
 float Vcc = 3.5;
 
@@ -81,14 +78,14 @@ void WiFiEvent(WiFiEvent_t event) {
 }
 
 void onMqttConnect(bool sessionPresent) {
-  Serial.println("Connected to MQTT.");
-  Serial.print("Session present: ");
-  Serial.println(sessionPresent);
+    Serial.println("Connected to MQTT.");
+    Serial.print("Session present: ");
+    Serial.println(sessionPresent);
 }
 
 void onMqttDisconnect(AsyncMqttClientDisconnectReason reason) {
-  Serial.println("Disconnected from MQTT.");
-  if (WiFi.isConnected()) {
+   Serial.println("Disconnected from MQTT.");
+    if (WiFi.isConnected()) {
     xTimerStart(mqttReconnectTimer, 0);
   }
 }
@@ -106,12 +103,11 @@ void IRAM_ATTR onTimer() {
         digitalWrite(ledPin, LOW);
       }
   portEXIT_CRITICAL_ISR(&timerMux);
- 
 }
 
 void onMqttPublish(uint16_t packetId) {
   Serial.print("Publish acknowledged.");
-  Serial.print("  packetId: ");
+  Serial.print("packetId: ");
   Serial.println(packetId);
 }
 
@@ -142,7 +138,6 @@ void setup() {
   connectToWifi();
   initSD();
   SDwriteDataLabels();
-  logSDCard();
 }
 
 void loop() {
@@ -161,11 +156,13 @@ void loop() {
     // Reading potentiometer value
      potValue = analogRead(potPin);
      temp = (Vcc*potValue)/4095;
-     
+     if(temp>2.5){
+         logSDCard();
+     }
+
     // Publish an MQTT message on topic esp32/temperature
     uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB_TEMP, 1, true, String(temp).c_str());                            
     Serial.printf("Publishing on topic %s at QoS 1, packetId: %i", MQTT_PUB_TEMP, packetIdPub1);
     Serial.printf("Message: %.2f \n", temp);
-
   }
 }
