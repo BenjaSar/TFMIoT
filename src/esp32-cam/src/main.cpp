@@ -1,4 +1,5 @@
 /*********
+ * Development bases on working of:
   Rui Santos
   Complete project details at https://RandomNerdTutorials.com/esp32-cam-take-photo-save-microsd-card
   
@@ -57,9 +58,8 @@ void setup() {
   WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0); //disable brownout detector
  
   Serial.begin(115200);
-  //Serial.setDebugOutput(true);
-  //Serial.println();
-  
+
+  //Config camera
   camera_config_t config;
   config.ledc_channel = LEDC_CHANNEL_0;
   config.ledc_timer = LEDC_TIMER_0;
@@ -119,7 +119,7 @@ void setup() {
     Serial.println("Camera capture failed");
     return;
   }
-  // initialize EEPROM with predefined size
+  // Initialize EEPROM with predefined size
   EEPROM.begin(EEPROM_SIZE);
   pictureNumber = EEPROM.read(0) + 1;
 
@@ -146,6 +146,10 @@ void setup() {
   pinMode(4, OUTPUT);
   digitalWrite(4, LOW);
   rtc_gpio_hold_en(GPIO_NUM_4);
+  
+  //Interruption which enabling the GPIO 13
+  esp_sleep_enable_ext0_wakeup(GPIO_NUM_13, 0);
+
   
   delay(2000);
   Serial.println("Going to sleep now");

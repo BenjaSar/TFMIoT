@@ -67,7 +67,7 @@ services:
       TZ:                    America/Argentina/Buenos_Aires  
 
     volumes:
-                            #Copy the sql script to create tables
+                             #Copy the sql script to create tables
       -                     ./db/dumps/tables.sql:/docker-entrypoint-initdb.d/tables.sql
       -                     ./db/data:/var/lib/postgresql/data/ # persist data even if container shuts down 
     ports:  

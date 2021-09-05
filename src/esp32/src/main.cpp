@@ -1,4 +1,4 @@
-/*
+/*Development based on working of 
   Rui Santos
   Complete project details at https://RandomNerdTutorials.com/esp32-mqtt-publish-bme280-arduino/
   
@@ -15,22 +15,16 @@ extern "C" {
   #include "freertos/FreeRTOS.h"
   #include "freertos/timers.h"
 }
-
+    
 #include <AsyncMqttClient.h>
 
-// Credentials for connecting to the network
-#define WIFI_SSID "MileFabi"
-#define WIFI_PASSWORD "271355000"
+//Open, read and write sdCard
+#include "sdcard.h"
 
+//File that contains credentials and MQTT HOST AND PORT
+#include "credentials.h"
 
-//const char* MqttUser = "benjasar";
-//const char* PassWordMqtt = "2857";
-
-// Raspberry Pi Mosquitto MQTT Broker
-#define MQTT_HOST IPAddress(192, 168, 0, 13)
-
-//MQTT Port
-#define MQTT_PORT 1883
+#include "constantsValues.h"
 
 // Mqtt topics
 #define MQTT_PUB_TEMP "esp32/temperature"
@@ -40,10 +34,16 @@ float temp;
 int potValue = 0;
 float Vcc = 3.5;
 
+//Set state of led
+int ledState = LOW;
 
-// Potentiometer is connected to GPIO 32 (Analog ADC1_CH6) 
-const int potPin = 32;
-const int ledPin = 33;
+
+volatile int interruptCounter;
+int totalInterruptCounter = 0;
+
+hw_timer_t * timer = NULL;
+portMUX_TYPE timerMux = portMUX_INITIALIZER_UNLOCKED;
+ 
 
 AsyncMqttClient mqttClient;
 TimerHandle_t mqttReconnectTimer;
@@ -52,6 +52,7 @@ TimerHandle_t wifiReconnectTimer;
 unsigned long previousMillis = 0;   // Stores last time temperature was published
 const long interval = 10000;        // Interval at which to publish sensor readings
 
+//Functions 
 void connectToWifi() {
   Serial.println("Connecting to Wi-Fi...");
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
@@ -63,7 +64,7 @@ void connectToMqtt() {
 }
 
 void WiFiEvent(WiFiEvent_t event) {
-  Serial.printf("[WiFi-event] event: %d\n", event);
+  //Serial.printf("[WiFi-event] event: %d\n", event);
   switch(event) {
     case SYSTEM_EVENT_STA_GOT_IP:
       Serial.println("WiFi connected");
@@ -92,18 +93,21 @@ void onMqttDisconnect(AsyncMqttClientDisconnectReason reason) {
   }
 }
 
-/*void onMqttSubscribe(uint16_t packetId, uint8_t qos) {
-  Serial.println("Subscribe acknowledged.");
-  Serial.print("  packetId: ");
-  Serial.println(packetId);
-  Serial.print("  qos: ");
-  Serial.println(qos);
+void IRAM_ATTR onTimer() {
+  portENTER_CRITICAL_ISR(&timerMux);
+  interruptCounter++;
+  potValue = analogRead(potPin);
+  temp = (Vcc*potValue)/4095;
+           if (ledState == LOW) {
+        ledState= HIGH;
+        digitalWrite(ledPin, HIGH);
+      } else{
+        ledState = LOW;
+        digitalWrite(ledPin, LOW);
+      }
+  portEXIT_CRITICAL_ISR(&timerMux);
+ 
 }
-void onMqttUnsubscribe(uint16_t packetId) {
-  Serial.println("Unsubscribe acknowledged.");
-  Serial.print("  packetId: ");
-  Serial.println(packetId);
-}*/
 
 void onMqttPublish(uint16_t packetId) {
   Serial.print("Publish acknowledged.");
@@ -114,10 +118,15 @@ void onMqttPublish(uint16_t packetId) {
 void setup() {
   Serial.begin(115200);
   Serial.println();
+
+  timer = timerBegin(0, 80, true);
+  timerAttachInterrupt(timer, &onTimer, true);
+  timerAlarmWrite(timer, 10000, true);
+  timerAlarmEnable(timer);
   
   // Initialize temperature sensor
   pinMode(ledPin, OUTPUT);
-  
+
   mqttReconnectTimer = xTimerCreate("mqttTimer", pdMS_TO_TICKS(2000), pdFALSE, (void*)0,reinterpret_cast<TimerCallbackFunction_t>(connectToMqtt));
   wifiReconnectTimer = xTimerCreate("wifiTimer", pdMS_TO_TICKS(2000), pdFALSE, (void*)0, reinterpret_cast<TimerCallbackFunction_t>(connectToWifi));
 
@@ -125,27 +134,34 @@ void setup() {
 
   mqttClient.onConnect(onMqttConnect);
   mqttClient.onDisconnect(onMqttDisconnect);
-  //mqttClient.onSubscribe(onMqttSubscribe);
-  //mqttClient.onUnsubscribe(onMqttUnsubscribe);
+
   mqttClient.onPublish(onMqttPublish);
   mqttClient.setServer(MQTT_HOST, MQTT_PORT);
   // If your broker requires authentication (username and password), set them below
   //mqttClient.setCredentials("REPlACE_WITH_YOUR_USER", "REPLACE_WITH_YOUR_PASSWORD");
   connectToWifi();
+  initSD();
+  SDwriteDataLabels();
+  logSDCard();
 }
 
 void loop() {
   unsigned long currentMillis = millis();
   // Every X number of seconds (interval = 10 seconds) 
   // it publishes a new MQTT message
-  if (currentMillis - previousMillis >= interval) {
-     // Save the last time a new reading was published
+
+   portENTER_CRITICAL(&timerMux);
+     
+    // Publish an MQTT message on topic esp32/temperature
+    Serial.printf("Message: %.2f \n", temp);
+    portEXIT_CRITICAL(&timerMux);
+    if (currentMillis - previousMillis >= interval) {
+    // Save the last time a new reading was published
      previousMillis = currentMillis;
     // Reading potentiometer value
      potValue = analogRead(potPin);
      temp = (Vcc*potValue)/4095;
      
-    
     // Publish an MQTT message on topic esp32/temperature
     uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB_TEMP, 1, true, String(temp).c_str());                            
     Serial.printf("Publishing on topic %s at QoS 1, packetId: %i", MQTT_PUB_TEMP, packetIdPub1);
