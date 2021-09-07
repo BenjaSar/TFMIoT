@@ -72,13 +72,4 @@ extern void initCamera(){
     return;
   }
 }
-
-
-
-
-
-
-
-
-
 #endif

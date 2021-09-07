@@ -1,5 +1,5 @@
 /*********
- * Development bases on working of:
+ * Development based on working of:
   Rui Santos
   Complete project details at https://RandomNerdTutorials.com/esp32-cam-take-photo-save-microsd-card
   
@@ -19,21 +19,16 @@
 #include "img_converters.h"
 #include "Arduino.h"
 #include "fb_gfx.h"
-//#include "fd_forward.h"
-//#include "fr_forward.h"
-#include "FS.h"                // SD Card ESP32
-#include "SD_MMC.h"            // SD Card ESP32
 #include "soc/soc.h"           // Disable brownour problems
 #include "soc/rtc_cntl_reg.h"  // Disable brownour problems
 //#include <dl_lib.h>
 #include "driver/rtc_io.h"
 #include <EEPROM.h>            // read and write from flash memory
 #include "camera.h"            // Camera configuration
+#include "sdCard.h"
 
 // define the number of bytes you want to access
 #define EEPROM_SIZE 1
-
-
 
 int pictureNumber = 0;
 
@@ -46,16 +41,9 @@ void setup() {
   configCamera();
   //Camera initialization
   initCamera();
-  //Serial.println("Starting SD Card");
-  if(!SD_MMC.begin()){
-    Serial.println("SD Card Mount Failed");
-    return;
-  }
-  uint8_t cardType = SD_MMC.cardType();
-  if(cardType == CARD_NONE){
-    Serial.println("No SD Card attached");
-    return;
-  }
+  
+  //Init SD card
+  initSD();
     
   camera_fb_t * fb = NULL;
   

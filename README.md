@@ -10,11 +10,15 @@ Autor: FS - 2021
 
 ---
 
-1. [Introduccion General](#Introduccion)
+1. [Introduccion general](#Introduccion)
 2. [Arquitectura del HBD](#Arquitectura)
 3. [Organización del proyecto](#Organizacion)
 4. [Licencia](#Licencia)
 5. [Agradecimientos](#Agradecimientos)
+
+## Introducción general
+
+## Arquitectura del HBD
 
 ### Organización del proyecto
 

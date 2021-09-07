@@ -15,8 +15,11 @@ extern "C" {
   #include "freertos/FreeRTOS.h"
   #include "freertos/timers.h"
 }
+
+#include <Arduino.h>
     
 #include <AsyncMqttClient.h>
+#include "esp_timer.h"
 
 //Open, read and write sdCard
 #include "sdcard.h"
@@ -24,6 +27,7 @@ extern "C" {
 //File that contains credentials and MQTT HOST AND PORT
 #include "credentials.h"
 
+//File that contains constants values
 #include "constantsValues.h"
 
 // Variables to hold sensor readings
@@ -35,11 +39,11 @@ float Vcc = 3.5;
 int ledState = LOW;
 
 
-volatile int interruptCounter;
-int totalInterruptCounter = 0;
+//volatile int interruptCounter;
+//int totalInterruptCounter = 0;
 
-hw_timer_t * timer = NULL;
-portMUX_TYPE timerMux = portMUX_INITIALIZER_UNLOCKED;
+//hw_timer_t * timer = NULL;
+//portMUX_TYPE timerMux = portMUX_INITIALIZER_UNLOCKED;
  
 
 AsyncMqttClient mqttClient;
@@ -90,7 +94,7 @@ void onMqttDisconnect(AsyncMqttClientDisconnectReason reason) {
   }
 }
 
-void IRAM_ATTR onTimer() {
+/*void IRAM_ATTR onTimer() {
   portENTER_CRITICAL_ISR(&timerMux);
   interruptCounter++;
   potValue = analogRead(potPin);
@@ -103,7 +107,7 @@ void IRAM_ATTR onTimer() {
         digitalWrite(ledPin, LOW);
       }
   portEXIT_CRITICAL_ISR(&timerMux);
-}
+}*/
 
 void onMqttPublish(uint16_t packetId) {
   Serial.print("Publish acknowledged.");
@@ -114,15 +118,16 @@ void onMqttPublish(uint16_t packetId) {
 void setup() {
   Serial.begin(115200);
   Serial.println();
-
-  timer = timerBegin(0, 80, true);
-  timerAttachInterrupt(timer, &onTimer, true);
-  timerAlarmWrite(timer, 10000, true);
-  timerAlarmEnable(timer);
-  
+    
   // Initialize temperature sensor
   pinMode(ledPin, OUTPUT);
 
+  //Interruption which enabling the GPIO 13
+  esp_sleep_enable_ext0_wakeup(GPIO_NUM_13, 0);
+    /*timer = timerBegin(0, 80, true);
+  timerAttachInterrupt(timer, &onTimer, true);
+  timerAlarmWrite(timer, 10000, true);
+  timerAlarmEnable(timer);*/
   mqttReconnectTimer = xTimerCreate("mqttTimer", pdMS_TO_TICKS(2000), pdFALSE, (void*)0,reinterpret_cast<TimerCallbackFunction_t>(connectToMqtt));
   wifiReconnectTimer = xTimerCreate("wifiTimer", pdMS_TO_TICKS(2000), pdFALSE, (void*)0, reinterpret_cast<TimerCallbackFunction_t>(connectToWifi));
 
@@ -137,19 +142,14 @@ void setup() {
   //mqttClient.setCredentials("REPlACE_WITH_YOUR_USER", "REPLACE_WITH_YOUR_PASSWORD");
   connectToWifi();
   initSD();
-  SDwriteDataLabels();
-}
+  }
 
 void loop() {
   unsigned long currentMillis = millis();
   // Every X number of seconds (interval = 10 seconds) 
   // it publishes a new MQTT message
 
-   portENTER_CRITICAL(&timerMux);
-     
-    // Publish an MQTT message on topic esp32/temperature
-    Serial.printf("Message: %.2f \n", temp);
-    portEXIT_CRITICAL(&timerMux);
+   //portEXIT_CRITICAL(&timerMux);
     if (currentMillis - previousMillis >= interval) {
     // Save the last time a new reading was published
      previousMillis = currentMillis;
@@ -157,12 +157,22 @@ void loop() {
      potValue = analogRead(potPin);
      temp = (Vcc*potValue)/4095;
      if(temp>2.5){
-         logSDCard();
-     }
+      // Publish an MQTT message on topic esp32/temperature
+      uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB_TEMP, 1, true, String(temp).c_str());                            
+      Serial.printf("Publishing on topic %s at QoS 1, packetId: %i", MQTT_PUB_TEMP, packetIdPub1);
+      Serial.printf("Message: %.2f \n", temp);
+      
+      SDwriteDataLabels();
+      //Logging of lecture of temperatures
+      logSDCard();
+      if (ledState == LOW) {
+        ledState= HIGH;
+        digitalWrite(ledPin, HIGH);
+      } else{
+        ledState = LOW;
+        digitalWrite(ledPin, LOW);
+      }
 
-    // Publish an MQTT message on topic esp32/temperature
-    uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB_TEMP, 1, true, String(temp).c_str());                            
-    Serial.printf("Publishing on topic %s at QoS 1, packetId: %i", MQTT_PUB_TEMP, packetIdPub1);
-    Serial.printf("Message: %.2f \n", temp);
+     }
   }
 }
