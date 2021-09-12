@@ -1,4 +1,4 @@
-################################################################################# 
+#################################################################################
 # Author:FS
 # Date: 2021
 # Copyright: Agustin Bassi (https://github.com/agustinBassi/mq-connection)
@@ -12,86 +12,48 @@
 #   - docker exec -it mosquitto mosquitto_pub -t "/test/topic" -m "Test message"
 #
 #################################################################################
-  
-version: '3.8'
+
+version: "3.8"
 
 services:
-
   mosquitto:
-    image:                  eclipse-mosquitto:latest
-    hostname:               mosquitto
-    container_name:         mosquitto
+    image: eclipse-mosquitto:latest
+    hostname: mosquitto
+    container_name: mosquitto
 
     volumes:
-      -                     ./mqtt-broker/config:/mosquitto/config
-      -                     ./mqtt-broker/auth:/etc/mosquitto/
+      - ./mqtt-broker/config:/mosquitto/config
+      - ./mqtt-broker/auth:/etc/mosquitto/
 
     networks:
-      -                     mqtt-host-network 
+      - mqtt-host-network
     expose:
-      -                     "1883"
-      -                     "8883"
-      -                     "9001"
+      - "1883"
+      - "8883"
+      - "9001"
     ports:
-      -                     "1883:1883"
-      -                     "8883:8883"
-      -                     "9001:9001"
+      - "1883:1883"
+      - "8883:8883"
+      - "9001:9001"
+    restart: unless-stopped
 
   node-red:
-    depends_on:             
-      -                      mosquitto
+    depends_on:
+      - mosquitto
 
-    image:                   nodered/node-red:latest
+    image: nodered/node-red:latest-12
+
+    user: "1000"
 
     environment:
-      -                      TZ=America/Argentina/Buenos_Aires  
+      - TZ=America/Argentina/Buenos Aires
     volumes:
-      -                      ./node-red:/data
+      - ./node-red:/data
     networks:
-      -                      mqtt-host-network 
+      - mqtt-host-network
     ports:
-      -                      "1880:1880"
+      - "1880:1880"
 
-  postgres:
-    depends_on:             
-      -                      mosquitto
-    
-    container_name:          postgres
-
-    image:                   postgres:latest # use latest official postgres version
-    
-    environment:
-      POSTGRES_DB:           HBD  
-      POSTGRES_USER:         postgres                                     
-      POSTGRES_PASSWORD:     12345
-      TZ:                    America/Argentina/Buenos_Aires  
-
-    volumes:
-                             #Copy the sql script to create tables
-      -                     ./db/dumps/tables.sql:/docker-entrypoint-initdb.d/tables.sql
-      -                     ./db/data:/var/lib/postgresql/data/ # persist data even if container shuts down 
-    ports:  
-      -                      "5432:5432"
-
-  pgAdmin:
-    
-    depends_on:             
-      -                      postgres
-    
-    image:                   dpage/pgadmin4:latest
-
-    restart:                  always
-    
-    environment:
-      PGADMIN_DEFAULT_EMAIL:    admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: 12345
-      PGADMIN_LISTEN_PORT:      5050
-        
-    ports:
-      -                       "5050:5050"
-      
 networks:
-  
   mqtt-host-network:
-    driver:                  bridge
-
+    driver: bridge

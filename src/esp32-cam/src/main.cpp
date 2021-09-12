@@ -39,7 +39,8 @@ void setup() {
 
   //Config camera
   configCamera();
-  //Camera initialization
+  
+  //Init camera
   initCamera();
   
   //Init SD card
@@ -69,7 +70,7 @@ void setup() {
   } 
   else {
     file.write(fb->buf, fb->len); // payload (image), payload length
-    Serial.printf("Archivo guradado en: %s\n", path.c_str());
+    Serial.printf("File saved in: %s\n", path.c_str());
     EEPROM.write(0, pictureNumber);
     EEPROM.commit();
   }
@@ -83,11 +84,12 @@ void setup() {
   
   //Interruption which enabling the GPIO 13
   esp_sleep_enable_ext0_wakeup(GPIO_NUM_13, 0);
-
-  //Delay to go to sleep
-  delay(2000);
+  rtc_gpio_hold_dis(GPIO_NUM_4);
+  
+  //Delay to go to sleep.  
+  vTaskDelay(pdMS_TO_TICKS(2000));
   Serial.println("Going to sleep now");
-  delay(2000);
+  vTaskDelay(pdMS_TO_TICKS(2000));
   esp_deep_sleep_start();
   Serial.println("It will be never printed");
 }

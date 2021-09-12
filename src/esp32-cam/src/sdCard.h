@@ -15,7 +15,6 @@
 
 extern void initSD(){
 
-//Serial.println("Starting SD Card");
   if(!SD_MMC.begin()){
     Serial.println("SD Card Mount Failed");
     return;

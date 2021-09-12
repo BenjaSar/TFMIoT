@@ -80,9 +80,6 @@ extern void initSD(){
   file.close();
   }
 
-
-
-
   // If the data.txt file doesn't exist
   // Create a file on the SD card and write the data labels
   extern void SDwriteDataLabels(){

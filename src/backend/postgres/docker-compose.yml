@@ -1,0 +1,46 @@
+#################################################################################
+# Author:FS
+# Date: 2021
+# Copyright: Agustin Bassi (https://github.com/agustinBassi/mq-connection)
+# License: MIT
+# Project: Postgres - pgAdmin
+# Brief: In this container will find the db and the administrator pgAdmin 4 .
+#
+#################################################################################
+
+version: "3.8"
+
+services:
+  postgres:
+    container_name: postgres
+
+    image: postgres:latest # use latest official postgres version
+
+    environment:
+      POSTGRES_DB: HBD
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345
+      TZ: America/Argentina/Buenos_Aires
+
+    volumes:
+      #Copy the sql script to create tables
+      - ./postgres/db/dumps/tables.sql:/docker-entrypoint-initdb.d/tables.sql
+      - ./postgres/db/data:/var/lib/postgresql/data/ # persist data even if container shuts down
+    ports:
+      - "5432:5432"
+
+  pgAdmin:
+    depends_on:
+      - postgres
+
+    image: dpage/pgadmin4:latest
+
+    restart: always
+
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: 12345
+      PGADMIN_LISTEN_PORT: 5050
+
+    ports:
+      - "5050:5050"

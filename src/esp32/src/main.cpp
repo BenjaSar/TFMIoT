@@ -15,10 +15,10 @@ extern "C" {
   #include "freertos/FreeRTOS.h"
   #include "freertos/timers.h"
 }
-
 #include <Arduino.h>
     
 #include <AsyncMqttClient.h>
+#include "driver/rtc_io.h"
 #include "esp_timer.h"
 
 //Open, read and write sdCard
@@ -38,7 +38,6 @@ float Vcc = 3.5;
 //Set state of led
 int ledState = LOW;
 
-
 //volatile int interruptCounter;
 //int totalInterruptCounter = 0;
 
@@ -53,17 +52,29 @@ TimerHandle_t wifiReconnectTimer;
 unsigned long previousMillis = 0;   // Stores last time temperature was published
 const long interval = 10000;        // Interval at which to publish sensor readings
 
-//Functions 
+/**
+ * @brief Function for indicating that the wifi connection has been established
+ * 
+ */
 void connectToWifi() {
   Serial.println("Connecting to Wi-Fi...");
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 }
 
+/**
+ * @brief Function for connecting to mqtt broker
+ * 
+ */
 void connectToMqtt() {
   Serial.println("Connecting to MQTT...");
   mqttClient.connect();
 }
 
+/**
+ * @brief Function for indicating differents states during wifi connection
+ * 
+ * @param event 
+ */
 void WiFiEvent(WiFiEvent_t event) {
   //Serial.printf("[WiFi-event] event: %d\n", event);
   switch(event) {
@@ -81,12 +92,20 @@ void WiFiEvent(WiFiEvent_t event) {
   }
 }
 
+/**
+ * @brief Function for indicating that the client has been connected to server
+ * 
+ * @param sessionPresent 
+ */
 void onMqttConnect(bool sessionPresent) {
     Serial.println("Connected to MQTT.");
-    Serial.print("Session present: ");
-    Serial.println(sessionPresent);
 }
 
+/**
+ * @brief  Function for indicating that client has been connected from server
+ * 
+ * @param reason 
+ */
 void onMqttDisconnect(AsyncMqttClientDisconnectReason reason) {
    Serial.println("Disconnected from MQTT.");
     if (WiFi.isConnected()) {
@@ -108,7 +127,11 @@ void onMqttDisconnect(AsyncMqttClientDisconnectReason reason) {
       }
   portEXIT_CRITICAL_ISR(&timerMux);
 }*/
-
+/**
+ * @brief Function for publishing on broker mosquitto
+ * 
+ * @param packetId 
+ */
 void onMqttPublish(uint16_t packetId) {
   Serial.print("Publish acknowledged.");
   Serial.print("packetId: ");
@@ -118,12 +141,16 @@ void onMqttPublish(uint16_t packetId) {
 void setup() {
   Serial.begin(115200);
   Serial.println();
-    
-  // Initialize temperature sensor
-  pinMode(ledPin, OUTPUT);
+  // Initialize pin led
+  pinMode(ledPin, OUTPUT); 
 
-  //Interruption which enabling the GPIO 13
-  esp_sleep_enable_ext0_wakeup(GPIO_NUM_13, 0);
+  /**
+   * @brief Interruption which enabling the GPIO 13
+   * 
+   */
+  esp_sleep_enable_ext0_wakeup((gpio_num_t)wakeUp_pin, 0);   
+   
+  //Timer configuration 
     /*timer = timerBegin(0, 80, true);
   timerAttachInterrupt(timer, &onTimer, true);
   timerAlarmWrite(timer, 10000, true);
@@ -142,13 +169,20 @@ void setup() {
   //mqttClient.setCredentials("REPlACE_WITH_YOUR_USER", "REPLACE_WITH_YOUR_PASSWORD");
   connectToWifi();
   initSD();
-  }
+  
+  //Go to sleep now
+  Serial.println("Going to sleep now") ;
+  delay(30000);
+  esp_deep_sleep_start(); 
+  Serial.println("This will never be printed");
+}
 
 void loop() {
+  /**
+   * @brief Every X number of seconds (interval = 10 seconds) 
+   * it publishes a new MQTT message
+   */
   unsigned long currentMillis = millis();
-  // Every X number of seconds (interval = 10 seconds) 
-  // it publishes a new MQTT message
-
    //portEXIT_CRITICAL(&timerMux);
     if (currentMillis - previousMillis >= interval) {
     // Save the last time a new reading was published
@@ -157,11 +191,15 @@ void loop() {
      potValue = analogRead(potPin);
      temp = (Vcc*potValue)/4095;
      if(temp>2.5){
-      // Publish an MQTT message on topic esp32/temperature
+       /**
+        * @brief  Publish an MQTT message on topic esp32/temperature
+        * 
+        */
       uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB_TEMP, 1, true, String(temp).c_str());                            
       Serial.printf("Publishing on topic %s at QoS 1, packetId: %i", MQTT_PUB_TEMP, packetIdPub1);
       Serial.printf("Message: %.2f \n", temp);
       
+      //Write the  labels of the readings
       SDwriteDataLabels();
       //Logging of lecture of temperatures
       logSDCard();
@@ -172,7 +210,6 @@ void loop() {
         ledState = LOW;
         digitalWrite(ledPin, LOW);
       }
-
-     }
+    }
   }
 }
