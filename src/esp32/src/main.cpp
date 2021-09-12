@@ -16,7 +16,7 @@ extern "C" {
   #include "freertos/timers.h"
 }
 #include <Arduino.h>
-    
+#include <ArduinoJson.h>    
 #include <AsyncMqttClient.h>
 #include "driver/rtc_io.h"
 #include "esp_timer.h"
@@ -24,14 +24,13 @@ extern "C" {
 //Open, read and write sdCard
 #include "sdcard.h"
 
-//File that contains credentials and MQTT HOST AND PORT
+//File that contains the credentials and MQTT HOST AND PORT
 #include "credentials.h"
 
 //File that contains constants values
 #include "constantsValues.h"
 
 // Variables to hold sensor readings
-float temperature;
 int potValue = 0;
 float Vcc = 3.5;
 
@@ -148,7 +147,7 @@ void setup() {
    * @brief Interruption which enabling the GPIO 13
    * 
    */
-  esp_sleep_enable_ext0_wakeup((gpio_num_t)wakeUp_pin, 0);   
+ // esp_sleep_enable_ext0_wakeup((gpio_num_t)wakeUp_pin, 0);   
    
   //Timer configuration 
     /*timer = timerBegin(0, 80, true);
@@ -167,14 +166,17 @@ void setup() {
   mqttClient.setServer(MQTT_HOST, MQTT_PORT);
   // If your broker requires authentication (username and password), set them below
   //mqttClient.setCredentials("REPlACE_WITH_YOUR_USER", "REPLACE_WITH_YOUR_PASSWORD");
-  connectToWifi();
   initSD();
+  //Write the  labels of the readings
+  SDwriteDataLabels();
+  //Invoke function to connect to wifi network
+  connectToWifi();
   
-  //Go to sleep now
+  /*Go to sleep now
   Serial.println("Going to sleep now") ;
   delay(30000);
   esp_deep_sleep_start(); 
-  Serial.println("This will never be printed");
+  Serial.println("This will never be printed");*/
 }
 
 void loop() {
@@ -183,24 +185,25 @@ void loop() {
    * it publishes a new MQTT message
    */
   unsigned long currentMillis = millis();
-   //portEXIT_CRITICAL(&timerMux);
+  //portEXIT_CRITICAL(&timerMux);
     if (currentMillis - previousMillis >= interval) {
-    // Save the last time a new reading was published
-     previousMillis = currentMillis;
-    // Reading potentiometer value
-     potValue = analogRead(potPin);
-     temp = (Vcc*potValue)/4095;
-     if(temp>2.5){
+      // Save the last time a new reading was published
+      previousMillis = currentMillis;
+      // Reading potentiometer value
+      potValue = analogRead(potPin);
+      temp = (Vcc*potValue)/4095;
+      if(temp>2.5){
        /**
         * @brief  Publish an MQTT message on topic esp32/temperature
         * 
         */
-      uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB_TEMP, 1, true, String(temp).c_str());                            
-      Serial.printf("Publishing on topic %s at QoS 1, packetId: %i", MQTT_PUB_TEMP, packetIdPub1);
+      String JSON_str = "{\"temperature\": ";
+      JSON_str.concat(temp);
+      JSON_str.concat("}"); 
+      uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB_TEMP, 1, true, JSON_str.c_str());                            
+      Serial.printf("Publishing on topic %s at QoS 1, packetId: %i\n",  MQTT_PUB_TEMP, packetIdPub1);
       Serial.printf("Message: %.2f \n", temp);
       
-      //Write the  labels of the readings
-      SDwriteDataLabels();
       //Logging of lecture of temperatures
       logSDCard();
       if (ledState == LOW) {

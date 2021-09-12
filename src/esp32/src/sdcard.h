@@ -36,7 +36,6 @@ void appendFile(fs::FS &fs, const char * path, const char * message) {
 
 //Initializing the microSD card module
 extern void logSDCard(){
-
   dataMessage = String(readingID) + ","  +  String(temp) + "\r\n";
                 
   Serial.print("Save data: ");
