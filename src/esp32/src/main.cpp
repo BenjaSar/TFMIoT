@@ -164,8 +164,8 @@ void setup() {
 
   mqttClient.onPublish(onMqttPublish);
   mqttClient.setServer(MQTT_HOST, MQTT_PORT);
-  // If your broker requires authentication (username and password), set them below
-  //mqttClient.setCredentials("REPlACE_WITH_YOUR_USER", "REPLACE_WITH_YOUR_PASSWORD");
+  //Authentication of user for the mosquitto
+  mqttClient.setCredentials(MQTT_USER, MQTT_PASSWORD);
   initSD();
   //Write the  labels of the readings
   SDwriteDataLabels();

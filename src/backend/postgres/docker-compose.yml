@@ -24,7 +24,7 @@ services:
 
     volumes:
       #Copy the sql script to create tables
-      - ./postgres/db/dumps/tables.sql:/docker-entrypoint-initdb.d/tables.sql
+      - ./postgres/db/dumps:/docker-entrypoint-initdb.d/tables.sql
       - ./postgres/db/data:/var/lib/postgresql/data/ # persist data even if container shuts down
     ports:
       - "5432:5432"

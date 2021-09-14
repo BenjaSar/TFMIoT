@@ -1,0 +1,5 @@
+
+#Mosquitto broker
+*.txt
+# ignore all acl
+*.acl

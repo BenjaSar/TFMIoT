@@ -23,7 +23,8 @@ services:
 
     volumes:
       - ./mqtt-broker/config:/mosquitto/config
-      - ./mqtt-broker/auth:/etc/mosquitto/
+      - ./mqtt-broker/log:/mosquitto/log
+      - ./mqtt-broker/auth:/mosquitto/auth
 
     networks:
       - mqtt-host-network

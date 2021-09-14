@@ -36,7 +36,8 @@ npm-debug.log*
 
 /src/backend/node-red/**
 /src/backend/node-red/.config.*
-node-red
+**/node-red
+
 #PlatformIO
 .pioenvs
 .piolibdeps
@@ -44,3 +45,11 @@ node-red
 .gcc-flags.json
 .pio
 
+#Mosquitto acl
+.acl
+
+#Ignore all certs
+**/certs
+
+# Ignore all logs
+**/log
