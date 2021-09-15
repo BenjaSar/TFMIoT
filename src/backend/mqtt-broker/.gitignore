@@ -3,3 +3,8 @@
 *.txt
 # ignore all acl
 *.acl
+
+#Certs
+*.csr  
+*.key
+*.crt

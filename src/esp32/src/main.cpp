@@ -1,4 +1,5 @@
-/*Development based on working of 
+/**#################################################################################
+  Development based on working of 
   Rui Santos
   Complete project details at https://RandomNerdTutorials.com/esp32-mqtt-publish-bme280-arduino/
   
@@ -7,6 +8,7 @@
   
   The above copyright notice and this permission notice shall be included in all
   copies or substantial portions of the Software.
+** #################################################################################
 */
 
 #include <Wire.h>

@@ -3,8 +3,8 @@
 # Date: 2021
 # Copyright: Agustin Bassi (https://github.com/agustinBassi/mq-connection)
 # License: MIT
-# Project: MQTT Hub
-# Brief: These containers act as a MQTT Hub for HBD Final Project.
+# Project: MQTT Broker
+# Brief: These containers act as a MQTT broker for HBD Final Project.
 #
 # How to test the MQTT connection to and from the broker:
 #
