@@ -13,8 +13,9 @@ Autor: FS - 2021
 1. [Introduccion general](#Introduccion)
 2. [Arquitectura del HBD](#Arquitectura)
 3. [Organización del proyecto](#Organizacion)
-4. [Licencia](#Licencia)
-5. [Agradecimientos](#Agradecimientos)
+4. [Como ejecutar la aplicacion](#eAplicacion)
+5. [Licencia](#Licencia)
+6. [Agradecimientos](#Agradecimientos)
 
 ## Introducción general
 
@@ -44,6 +45,8 @@ El proyecto se encuentra conformado por la siguiente estructura de directorios y
    └── doc                                 # Documentación general del proyecto
 
 ```
+
+## Como ejecutar la aplicación
 
 ## LICENCIA
 
