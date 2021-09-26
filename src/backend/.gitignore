@@ -32,11 +32,11 @@ npm-debug.log*
 /plugins
 /www
 
-/db
-
 /src/backend/node-red/**
 /src/backend/node-red/.config.*
 **/node-red
+
+/db
 
 #PlatformIO
 .pioenvs
@@ -53,3 +53,12 @@ npm-debug.log*
 
 # Ignore all logs
 **/log
+
+#Ignore variables enviroment
+.env
+
+#Ignore vscode files
+.vscode/
+
+#Ignore node_modules files
+node_modules

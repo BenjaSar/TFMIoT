@@ -55,6 +55,16 @@ services:
     ports:
       - "1880:1880"
 
+  nodeApp:
+    image: abassi/nodejs-server:10.0-dev
+    hostname: nodeApp
+    container_name: nodeApp
+    volumes:
+      - ./storage:/home/node/app/src
+    ports:
+      - "8000:3000"
+    command: nodemon /home/node/app/src
+
 networks:
   mqtt-host-network:
     driver: bridge
