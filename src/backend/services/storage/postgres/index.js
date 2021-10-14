@@ -4,9 +4,10 @@
  * MIoT - 2021
  */
 
+//Services for interfacing with PostgresSQL database
+
 const { Pool } = require("pg");
 
-//Services for interfacing with PostgresSQL database
 var config = {
   user: process.env.PGUSER,
   database: process.env.PGDATABASE,
