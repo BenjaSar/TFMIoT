@@ -9,6 +9,7 @@
  */
 
 const mqtt = require("mqtt");
+const { client_encoding } = require("pg/lib/defaults");
 topic = "esp32/temperature";
 //var caFile = fs.readFileSync("ca.crt");
 //var KEY = fs.readFileSync("client-certs\\client.key");
@@ -38,7 +39,8 @@ client.on("connect", function () {
 client.subscribe(topic, function (err, granted) {
   if (err) {
     console.error(err);
-    return;
+    client.end;
+    client.reconnect();
   }
   console.log("Subscribed to topic: " + topic);
 });
