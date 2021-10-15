@@ -4,7 +4,7 @@
 # Copyright: Agustin Bassi (https://github.com/agustinBassi/mq-connection)
 # License: MIT
 # Project: MQTT Suscribe
-# Brief: Services to susbcribe to the topic in the mqtt broker.
+# Brief: Services to subscribe to the topic in the mqtt broker.
 #################################################################################
  */
 

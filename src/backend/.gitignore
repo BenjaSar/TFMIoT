@@ -62,3 +62,6 @@ npm-debug.log*
 
 #Ignore node_modules files
 node_modules
+
+#Ignore config files
+config.js
