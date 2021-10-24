@@ -63,5 +63,5 @@ npm-debug.log*
 #Ignore node_modules files
 node_modules
 
-#Ignore config files
+#Ignore config file for nodejs -postgres 
 config.js

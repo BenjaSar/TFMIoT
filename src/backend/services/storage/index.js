@@ -2,7 +2,6 @@
 const express = require("express");
 // Creates an Express application using the top-level function
 const app = express();
-
 require("dotenv").config();
 
 var cors = require("cors");
@@ -15,9 +14,16 @@ const PORT = process.env.PORT || 3000;
 
 // Routes HTTP GET requests to the specified path "/" with the specified callback function
 app.get("/", function (request, response) {
-  response.send("Hello, World!");
+  response.send("Api is running");
 });
 
+var sensors = require("./routes/sensors");
+var users = require("./routes/users");
+
+app.use(express.json());
+
+app.use("/api/v1/sensors", sensors);
+app.use("api/v1/users", users);
 // Make the app listen on port 3000
 app.listen(PORT, function (err, res) {
   if (!err) {
@@ -26,3 +32,4 @@ app.listen(PORT, function (err, res) {
     console.log(JSON.stringify(err));
   }
 });
+module.exports = app;

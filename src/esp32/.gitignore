@@ -22,7 +22,8 @@ src/.vscode/*
 credentials.json
 flows*.json
 nodes/node-red-nodes/
-node_modules
+node_modules/
+launch.*
 ~/node-red/.config.*
 ~/node-red/.flow.*
 ~backend/node-red/
