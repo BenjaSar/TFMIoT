@@ -1,7 +1,6 @@
 /** #################################################################################
 # Author:FS
 # Date: 2021
-# Copyright: Agustin Bassi (https://github.com/agustinBassi/mq-connection)
 # License: MIT
 # Project: MQTT Suscribe
 # Brief: Services to subscribe to the topic in the mqtt broker.
@@ -9,7 +8,7 @@
  */
 
 const mqtt = require("mqtt");
-const { client_encoding } = require("pg/lib/defaults");
+const { client_encoding, port } = require("pg/lib/defaults");
 topic = "esp32/temperature";
 //var caFile = fs.readFileSync("ca.crt");
 //var KEY = fs.readFileSync("client-certs\\client.key");
@@ -21,7 +20,7 @@ var options = {
   password: "654321",
   clean: true,
   port: 1883,
-  //host: "192.168.0.13",
+  //host: "172.018.0.2",
   //protocol:'mqtts',
   //rejectUnauthorized: false,
   //key: KEY,
@@ -29,18 +28,27 @@ var options = {
   //ca: caFile,
 };
 
+//var client = mqtt.connect("mqtt://192.168.0.13:port", options);
 var client = mqtt.connect("mqtt://192.168.0.13:port", options);
-//var client = mqtt.connect("mqtt://172.18.0.2:1883", options);
 console.log("connected flag  " + client.connected);
 client.on("connect", function () {
   console.log("connected  " + client.connected);
+  if (client.connected == true) {
+    client.subscribe(topic, function (err) {
+      if (err) {
+        console.error(err);
+        client.end;
+        client.reconnect();
+      }
+      client.on("message", onMessageReceived);
+      console.log("Subscribed to topic: " + topic);
+    });
+  }
 });
 
-client.subscribe(topic, function (err, granted) {
-  if (err) {
-    console.error(err);
-    client.end;
-    client.reconnect();
-  }
-  console.log("Subscribed to topic: " + topic);
-});
+function onMessageReceived(topic, message) {
+  console.log(topic);
+  console.log(message.toString());
+  console.log(JSON.parse(message));
+  console.log("");
+}

@@ -3,7 +3,6 @@
  * Author: FS
  * MIoT - 2021
  */
-
 //Services for interfacing with PostgresSQL database
 
 const { Pool } = require("pg");

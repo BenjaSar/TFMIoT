@@ -4,7 +4,7 @@
  * MIoT - 2021
  */
 
-//Routes for CRUD operations in the sensor table
+//Routes for CRUD operations in the table
 
 const express = require("express");
 const routerSensors = express.Router();

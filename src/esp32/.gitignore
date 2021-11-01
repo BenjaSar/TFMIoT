@@ -32,3 +32,4 @@ launch.*
 ~/Documents/**/**/**/esp32/credentials.h
 credentials.h
 .config.*
+

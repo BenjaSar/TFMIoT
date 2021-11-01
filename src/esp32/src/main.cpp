@@ -202,9 +202,10 @@ void loop() {
       String JSON_str = "{\"temperature\": ";
       JSON_str.concat(temp);
       JSON_str.concat("}"); 
-      uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB_TEMP, 1, true, JSON_str.c_str());                            
-      Serial.printf("Publishing on topic %s at QoS 1, packetId: %i\n",  MQTT_PUB_TEMP, packetIdPub1);
+      uint16_t packetIdPub = mqttClient.publish(MQTT_PUB_TEMP, 1, true, JSON_str.c_str());                            
+      Serial.printf("Publishing on topic %s at QoS 1, packetId: %i\n",  MQTT_PUB_TEMP, packetIdPub);
       Serial.printf("Message: %.2f \n", temp);
+//      Serial.printf("%s\n", JSON_str.c_str());
       
       //Logging of lecture of temperatures
       logSDCard();
