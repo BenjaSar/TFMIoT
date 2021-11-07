@@ -17,12 +17,14 @@ app.get("/", function (request, response) {
   response.send("Api is running");
 });
 
+var nodes = require("./routes/nodes");
 var sensors = require("./routes/sensors");
 var users = require("./routes/users");
 var temperatures = require("./routes/temperatures");
 
 app.use(express.json());
 
+app.use("/api/v1/nodes", nodes);
 app.use("/api/v1/sensors", sensors);
 app.use("/api/v1/users", users);
 app.use("/api/v1/temperatures", temperatures);

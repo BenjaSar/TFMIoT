@@ -10,6 +10,7 @@ const express = require("express");
 const routerUsers = express.Router();
 const pg = require("../../postgres");
 const getAllUsers = "Select Users FROM MIoT.Users  ORDER BY idUsers ASC";
+const createUSer = "INSERT INTO MIoT.Users(idUsers, users) VALUES($1, $2)";
 
 //Get  all of users
 routerUsers.get("/", function (req, response) {
@@ -25,18 +26,15 @@ routerUsers.get("/", function (req, response) {
 
 //Insert sensor by id
 routerUsers.post("/", function (request, response) {
-  const { idSensors, sensors } = request.body;
-  pg.query(createSensor, [idSensors, sensors], (err, results) => {
+  const { idUsers, users } = request.body;
+  pg.query(createUSer, [idUsers, users], (err, results) => {
     if (err) {
       console.log(err);
       return;
     }
-    response
-      .json(results.rows)
-      .send("Sensor added with id ${result.insertId}")
-      .status(201);
+    response.json(results.rows).status(201);
 
-    console.log("Data insert succesful");
+    console.log("User insert succesful");
   });
 });
 module.exports = routerUsers;
