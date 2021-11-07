@@ -15,7 +15,6 @@ pool.connect((err) => {
     return console.error("Error acquiring client", err.stack);
   } else {
     console.log("Database is up and running");
-    //pool.end();
   }
 });
 

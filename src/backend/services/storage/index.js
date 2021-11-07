@@ -10,7 +10,7 @@ var corsOption = { origin: "*", optionSuccesStatus: 200 };
 
 app.use(cors(corsOption));
 // Define port number as 8000
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 // Routes HTTP GET requests to the specified path "/" with the specified callback function
 app.get("/", function (request, response) {
@@ -24,9 +24,9 @@ var temperatures = require("./routes/temperatures");
 app.use(express.json());
 
 app.use("/api/v1/sensors", sensors);
-app.use("api/v1/users", users);
-app.use("api/v1/temperatures", temperatures);
-// Make the app listen on port 3000
+app.use("/api/v1/users", users);
+app.use("/api/v1/temperatures", temperatures);
+// Make the app listen on port 8000
 app.listen(PORT, function (err, res) {
   if (!err) {
     console.log("Server listening on http://localhost:" + PORT);
