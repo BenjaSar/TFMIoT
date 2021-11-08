@@ -47,8 +47,10 @@ client.on("connect", function () {
 });
 
 function onMessageReceived(topic, message) {
+  const parsedMessage = message.toString();
   console.log(topic);
-  console.log(message.toString());
-  console.log(JSON.parse(message));
+  console.log(parsedMessage);
+  object = JSON.parse(parsedMessage);
+  console.log(object.temperature);
   console.log("");
 }

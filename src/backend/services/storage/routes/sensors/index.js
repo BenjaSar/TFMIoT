@@ -52,8 +52,7 @@ routerSensors.post("/", function (request, response) {
       .json(results.rows)
       .send("Sensor added with id ${result.insertId}")
       .status(201);
-
-    console.log("Data insert succesful");
+    console.log("Sensor insert succesful");
   });
 });
 module.exports = routerSensors;

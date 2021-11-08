@@ -8,14 +8,16 @@
 const express = require("express");
 const routerTemperatures = express.Router();
 const pg = require("../../postgres");
-const queryAllTemperatures =
+const getAllTemperatures =
   "SELECT Temperatures FROM MIoT.Temperatures ORDER BY idTemperature ASC";
-const queryTemperaturesbyId =
+const getTemperaturesbyId =
   "SELECT * FROM MIoT.Temperatures WHERE  idTemperature = $1";
+const createTemperature =
+  "INSERT INTO MIoT.Temperatures(idTemperature, temperatures) VALUES($1, $2)";
 
 //Get  all of Temperatures lectures
 routerTemperatures.get("/", function (request, response) {
-  pg.query(queryAllTemperatures, (err, results) => {
+  pg.query(getAllTemperatures, (err, results) => {
     if (err) {
       res.send(err).status(400);
     }
@@ -28,7 +30,7 @@ routerTemperatures.get("/", function (request, response) {
 routerTemperatures.get("/:pk", function (req, response) {
   const id = parseInt(req.params.pk);
 
-  pg.query(queryTemperaturesbyId, [id], (err, results) => {
+  pg.query(getTemperaturesbyId, [id], (err, results) => {
     if (err) {
       response.send(err).status(400);
     }
@@ -37,4 +39,16 @@ routerTemperatures.get("/:pk", function (req, response) {
   });
 });
 
+//Insert temperatures
+routerTemperatures.post("/", function (request, response) {
+  const { idTemperature, temperatures } = request.body;
+  pg.query(createTemperature, [idTemperature, temperatures], (err, results) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    response.json(results.rows).status(201);
+    console.log("Temperature insert succesful");
+  });
+});
 module.exports = routerTemperatures;

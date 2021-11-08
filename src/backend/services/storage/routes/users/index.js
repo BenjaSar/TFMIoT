@@ -14,7 +14,6 @@ const createUSer = "INSERT INTO MIoT.Users(idUsers, users) VALUES($1, $2)";
 
 //Get  all of users
 routerUsers.get("/", function (req, response) {
-  console.log("Probando");
   pg.query(getAllUsers, (err, results) => {
     if (err) {
       throw err;
@@ -24,7 +23,7 @@ routerUsers.get("/", function (req, response) {
   });
 });
 
-//Insert sensor by id
+//Insert user by id
 routerUsers.post("/", function (request, response) {
   const { idUsers, users } = request.body;
   pg.query(createUSer, [idUsers, users], (err, results) => {
@@ -33,7 +32,6 @@ routerUsers.post("/", function (request, response) {
       return;
     }
     response.json(results.rows).status(201);
-
     console.log("User insert succesful");
   });
 });

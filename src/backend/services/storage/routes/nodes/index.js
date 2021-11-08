@@ -15,7 +15,6 @@ routerNodes.get("/", function (req, response) {
 });
 
 //create Nodes
-//Insert sensor by id
 routerNodes.post("/", function (request, response) {
   const { idNodes, nodes } = request.body;
   pg.query(createNodes, [idNodes, nodes], (err, results) => {
@@ -24,7 +23,6 @@ routerNodes.post("/", function (request, response) {
       return;
     }
     response.json(results.rows).status(201);
-
     console.log("Node insert succesful");
   });
 });
