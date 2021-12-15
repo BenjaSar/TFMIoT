@@ -23,7 +23,7 @@ routerNodes.post("/", function (request, response) {
       return;
     }
     response.json(results.rows).status(201);
-    console.log("Node insert succesful");
+    console.log("Node has been inserted succesfully");
   });
 });
 
