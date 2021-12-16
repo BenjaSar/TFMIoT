@@ -9,9 +9,11 @@
 const express = require("express");
 const routerUsers = express.Router();
 const pg = require("../../postgres");
-const getAllUsers = "Select Users FROM MIoT.Users  ORDER BY idUsers ASC";
-const createUSer = "INSERT INTO MIoT.Users(idUsers, users) VALUES($1, $2)";
-const deleteUsers = "DELETE FROM MIoT.Users(idUsers) WHERE   idUsers = $1";
+const getAllUsers = "SELECT Users FROM MIoT.Users  ORDER BY idUsers ASC";
+const getUserByID = "SELECT Users FROM MIoT.Users WHERE idUsers=$1";
+const editUserById = "ALTER Users FROM MIoT.Users WHERE idUsers=$1";
+const createUser = "INSERT INTO MIoT.Users(idUsers, users) VALUES($1, $2)";
+const deleteUsers = "DELETE FROM MIoT.Users WHERE  idUsers=$1";
 
 //Get  all of users
 routerUsers.get("/", function (req, response) {
@@ -24,21 +26,44 @@ routerUsers.get("/", function (req, response) {
   });
 });
 
-//Insert user by id
-routerUsers.post("/:idUsers", function (request, response) {
-  const idUsers = parseInt(request.params.idUsers);
-  const { users } = request.body;
-  pg.query(createUSer, [idUsers, users], (err, results) => {
+//Get user by id
+routerUsers.get("/:idUsers", function (req, response) {
+  const idUsers = parseInt(req.params.idUsers);
+  pg.query(getUserByID, [idUsers], (err, results) => {
     if (err) {
       console.log(err);
       return;
     }
-    response.json(results.rows).status(201);
+    response.status(200).json(results.rows);
+    console.log(results.rows);
+  });
+});
+//Insert user by id
+routerUsers.post("/", function (request, response) {
+  const { idUsers, users } = request.body;
+  pg.query(createUser, [idUsers, users], (err, results) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    response.send(`User added with ID:${idUsers}`).status(201);
     console.log("User have been inserted succesfully");
   });
 });
 
-//Delete user by id
+//Edit user by Id
+routerUsers.put("/:idUsers", function (request, response) {
+  const idUsers = parseInt(request.params.idUsers);
+  pg.query(editUserById, [idUsers], (err, results) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    response.status(201).send("User modified in a successful way");
+  });
+});
+
+//Delete user by Id
 routerUsers.delete("/:idUsers", function (request, response) {
   const idUsers = parseInt(request.params.idUsers);
   pg.query(deleteUsers, [idUsers], (err, results) => {
@@ -46,7 +71,8 @@ routerUsers.delete("/:idUsers", function (request, response) {
       console.log(err);
       return;
     }
-    response.status(200).send(`User deleted with ID:${id}`);
+    response.status(200).send(`User deleted with ID:${idUsers}`);
+    console.log("User have been removed succesfully");
   });
 });
 
