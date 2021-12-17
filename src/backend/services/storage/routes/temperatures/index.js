@@ -48,7 +48,7 @@ routerTemperatures.post("/", function (request, response) {
       return;
     }
     response.json(results.rows).status(201);
-    console.log("Temperature insert succesful");
+    console.log("Temperature inserted succesfully");
   });
 });
 module.exports = routerTemperatures;

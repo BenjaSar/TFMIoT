@@ -2,6 +2,7 @@ const express = require("express");
 const routerNodes = express.Router();
 const pg = require("../../postgres");
 const getAllNodes = "SELECT * FROM MIoT.Nodes  ORDER BY idNodes DESC";
+const getNodeById = "SELECT Nodes FROM MIoT.Nodes WHERE idNodes =$1";
 const createNodes = "INSERT INTO MIoT.Nodes(idNodes, Nodes) VALUES($1, $2)";
 //Get  all of nodes
 routerNodes.get("/", function (req, response) {
@@ -14,7 +15,18 @@ routerNodes.get("/", function (req, response) {
   });
 });
 
-//create Nodes
+//Get nodes by Id
+routerNodes.get("/:pk", function (request, response) {
+  const id = parseInt(request.params.pk);
+  pg.query(getNodeById, [id], (err, results) => {
+    if (err) {
+      throw err;
+    }
+    response.status(200).json(results.rows);
+    console.log(results.rows);
+  });
+});
+//Create Nodes
 routerNodes.post("/", function (request, response) {
   const { idNodes, nodes } = request.body;
   pg.query(createNodes, [idNodes, nodes], (err, results) => {
