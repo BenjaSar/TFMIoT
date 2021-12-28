@@ -3,18 +3,17 @@
  * Author: FS
  * MIoT - 2021
  */
-//Routes for CRUD operations in temperature table
-
+//Routes for CRUD operations in temperature table";
 const express = require("express");
 const routerTemperatures = express.Router();
 const pg = require("../../postgres");
+const client = require("../../mqttsubscribe");
 const getAllTemperatures =
   "SELECT Temperatures FROM MIoT.Temperatures ORDER BY idTemperature ASC";
 const getTemperaturesbyId =
   "SELECT * FROM MIoT.Temperatures WHERE  idTemperature = $1";
 const createTemperature =
-  "INSERT INTO MIoT.Temperatures(idTemperature, temperatures) VALUES($1, $2)";
-
+  "INSERT INTO MIoT.Temperatures(temperature) VALUES($1)";
 //Get  all of Temperatures lectures
 routerTemperatures.get("/", function (request, response) {
   pg.query(getAllTemperatures, (err, results) => {
@@ -40,15 +39,14 @@ routerTemperatures.get("/:pk", function (req, response) {
 });
 
 //Insert temperatures
-routerTemperatures.post("/", function (request, response) {
-  const { idTemperature, temperatures } = request.body;
-  pg.query(createTemperature, [idTemperature, temperatures], (err, results) => {
+routerTemperatures.post("/", function (request, response, next) {
+  //temperatura = client.temperature;
+  pg.query(createTemperature, [temperatura], (err, results) => {
     if (err) {
-      console.log(err);
-      return;
+      response.send(err).status(400);
     }
-    response.json(results.rows).status(201);
-    console.log("Temperature inserted succesfully");
+    response.status(201).json(results);
+    console.log(`Temperature inserted succesfully, ${temperature}`);
   });
 });
 module.exports = routerTemperatures;

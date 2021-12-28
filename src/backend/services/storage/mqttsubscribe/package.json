@@ -1,0 +1,15 @@
+{
+  "name": "mqttsubscribe",
+  "version": "1.0.0",
+  "description": "",
+  "main": "subscriber.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "FS",
+  "license": "ISC",
+  "dependencies": {
+    "form-data": "^4.0.0",
+    "mqtt": "^4.2.8"
+  }
+}

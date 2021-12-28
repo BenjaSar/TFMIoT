@@ -1,14 +1,4 @@
-/**
- * Embedded Systems Laboratory - UBA - SOFSE
- * Author: FS
- * MIoT - 2021
- */
-
-//Routes for CRUD operations in sensors table
-
-const { response } = require("express");
 const express = require("express");
-const req = require("express/lib/request");
 const routerSensors = express.Router();
 const pg = require("../../postgres");
 const getAllSensors = "SELECT * FROM MIoT.Sensors  ORDER BY idSensors DESC";
@@ -42,13 +32,13 @@ routerSensors.get("/:pk", function (req, response) {
 
 //Insert sensor by id
 routerSensors.post("/", function (request, response) {
-  const { idSensors, sensors } = request.body;
-  pg.query(createSensor, [idSensors, sensors], (err, results) => {
+  const { sensors } = request.body;
+  pg.query(createSensor, [sensors], (err, results) => {
     if (err) {
       console.log(err);
       return;
     }
-    response.status(201).send(`Sensor added with id ${idSensors}`);
+    response.status(201).send(`Sensor added`);
     console.log("Sensor has been inserted succesfully");
   });
 });

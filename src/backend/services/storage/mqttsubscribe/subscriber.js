@@ -2,7 +2,7 @@
 # Author:FS
 # Date: 2021
 # License: MIT
-# Project: MQTT Suscribe
+# Project: MQTT Subscribe
 # Brief: Services to subscribe to the topic in the mqtt broker.
 #################################################################################
  */
@@ -10,6 +10,8 @@
 const mqtt = require("mqtt");
 const { client_encoding, port } = require("pg/lib/defaults");
 topic = "esp32/temperature";
+const axios = require("axios");
+const { response } = require("express");
 //var caFile = fs.readFileSync("ca.crt");
 //var KEY = fs.readFileSync("client-certs\\client.key");
 //var CERT = fs.readFileSync("client-certs\\client.crt");
@@ -20,6 +22,8 @@ var options = {
   password: "654321",
   clean: true,
   port: 1883,
+  keeplive: 60,
+  connectTimeout: 30 * 1000,
   //host: "172.018.0.2",
   //protocol:'mqtts',
   //rejectUnauthorized: false,
@@ -40,7 +44,9 @@ client.on("connect", function () {
         client.end;
         client.reconnect();
       }
-      client.on("message", onMessageReceived);
+      client.on("message", (topic, message) => {
+        onMessageReceived(topic, message);
+      });
       console.log("Subscribed to topic: " + topic);
     });
   }
@@ -48,9 +54,19 @@ client.on("connect", function () {
 
 function onMessageReceived(topic, message) {
   const parsedMessage = message.toString();
-  console.log(topic);
-  console.log(parsedMessage);
   object = JSON.parse(parsedMessage);
-  console.log(object.temperature);
-  console.log("");
+  temperature = JSON.stringify(object);
+  temperatura = JSON.stringify(object.temperature);
+  axios
+    .post("http://localhost:5000/api/v1/temperatures", object, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    .then(response)
+    .catch((error) => {
+      console.error(error);
+    });
 }
+
+module.exports.temperatura = this.temperatura;

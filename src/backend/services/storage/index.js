@@ -24,7 +24,6 @@ var temperatures = require("./routes/temperatures");
 
 const bodyParser = require("body-parser"); // middleware
 app.use(bodyParser.urlencoded({ extended: false }));
-
 app.use(express.json());
 
 app.use("/api/v1/nodes", nodes);

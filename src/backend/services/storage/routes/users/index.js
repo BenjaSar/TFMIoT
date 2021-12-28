@@ -12,7 +12,8 @@ const pg = require("../../postgres");
 const getAllUsers = "SELECT Users FROM MIoT.Users  ORDER BY idUsers ASC";
 const getUserByID = "SELECT Users FROM MIoT.Users WHERE idUsers=$1";
 const editUserById = "ALTER Users FROM MIoT.Users WHERE idUsers=$1";
-const createUser = "INSERT INTO MIoT.Users(idUsers, users) VALUES($1, $2)";
+const createUser =
+  "INSERT INTO MIoT.Users(usersName, usersSurname, userPosition, usersEmail, usersPasswords, usersConfirmPasswords) VALUES($1, $2, $3, $4, $5, $6)";
 const deleteUsers = "DELETE FROM MIoT.Users WHERE  idUsers=$1";
 
 //Get  all of users
@@ -40,20 +41,44 @@ routerUsers.get("/:idUsers", function (req, response) {
 });
 //Insert user by id
 routerUsers.post("/", function (request, response) {
-  const { idUsers, users } = request.body;
-  pg.query(createUser, [idUsers, users], (err, results) => {
-    if (err) {
-      console.log(err);
-      return;
+  const {
+    //idUsers,
+    usersName,
+    usersSurname,
+    userPosition,
+    usersEmail,
+    usersPasswords,
+    usersConfirmPasswords,
+  } = request.body;
+  pg.query(
+    createUser,
+    [
+      //idUsers,
+      usersName,
+      usersSurname,
+      userPosition,
+      usersEmail,
+      usersPasswords,
+      usersConfirmPasswords,
+    ],
+    (err, results) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      response
+        .send(
+          `User added with ID: ${usersName}, ${usersSurname}, ${usersEmail}`
+        )
+        .status(201);
+      console.log("User have been inserted succesfully");
     }
-    response.send(`User added with ID:${idUsers}`).status(201);
-    console.log("User have been inserted succesfully");
-  });
+  );
 });
 
 //Edit user by Id
-routerUsers.put("/:idUsers", function (request, response) {
-  const idUsers = parseInt(request.params.idUsers);
+routerUsers.put("/:pk", function (request, response) {
+  const idUsers = parseInt(request.params.pk);
   pg.query(editUserById, [idUsers], (err, results) => {
     if (err) {
       console.log(err);
