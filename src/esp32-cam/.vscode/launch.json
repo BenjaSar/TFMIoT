@@ -29,6 +29,16 @@
             "projectEnvName": "esp32cam",
             "toolchainBinDir": "/home/benjas/.platformio/packages/toolchain-xtensa32/bin",
             "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "type": "platformio-debug",
+            "request": "launch",
+            "name": "PIO Debug (without uploading)",
+            "executable": "/home/benjas/Documents/gitrepo/MIoT/src/esp32-cam/.pio/build/esp32cam/firmware.elf",
+            "projectEnvName": "esp32cam",
+            "toolchainBinDir": "/home/benjas/.platformio/packages/toolchain-xtensa32/bin",
+            "internalConsoleOptions": "openOnSessionStart",
+            "loadMode": "manual"
         }
     ]
 }

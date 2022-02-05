@@ -22,8 +22,9 @@ var sensors = require("./routes/sensors");
 var users = require("./routes/users");
 var temperatures = require("./routes/temperatures");
 
-const bodyParser = require("body-parser"); // middleware
+const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: false }));
+//to parse application/json
 app.use(express.json());
 
 app.use("/api/v1/nodes", nodes);

@@ -63,8 +63,7 @@ routerUsers.post("/", function (request, response) {
     ],
     (err, results) => {
       if (err) {
-        console.log(err);
-        return;
+        throw err;
       }
       response
         .send(
@@ -81,8 +80,7 @@ routerUsers.put("/:pk", function (request, response) {
   const idUsers = parseInt(request.params.pk);
   pg.query(editUserById, [idUsers], (err, results) => {
     if (err) {
-      console.log(err);
-      return;
+      throw err;
     }
     response.status(201).send("User modified in a successful way");
   });
@@ -93,8 +91,7 @@ routerUsers.delete("/:idUsers", function (request, response) {
   const idUsers = parseInt(request.params.idUsers);
   pg.query(deleteUsers, [idUsers], (err, results) => {
     if (err) {
-      console.log(err);
-      return;
+      throw err;
     }
     response.status(200).send(`User deleted with ID:${idUsers}`);
     console.log("User have been removed succesfully");

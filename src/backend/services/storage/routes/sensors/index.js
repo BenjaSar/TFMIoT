@@ -32,11 +32,10 @@ routerSensors.get("/:pk", function (req, response) {
 
 //Insert sensor by id
 routerSensors.post("/", function (request, response) {
-  const { sensors } = request.body;
-  pg.query(createSensor, [sensors], (err, results) => {
+  const { idSensors, sensors } = request.body;
+  pg.query(createSensor, [idSensors, sensors], (err, results) => {
     if (err) {
-      console.log(err);
-      return;
+      throw err;
     }
     response.status(201).send(`Sensor added`);
     console.log("Sensor has been inserted succesfully");
