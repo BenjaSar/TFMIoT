@@ -33,7 +33,7 @@ Docker: se implementaron los diferentes sistemas empleando el contenedor docker
 Las mejoras desarrolladas permiten al prototipo integrarse con los sistemas y/o programas que actualmente posee la empresa SOFSE. La nueva arquitectura se puede observar en la figura 1.
 
 <p align="center">
-    <img src="doc/arquitectura.png"{width=75%, height = 75%}><br>
+    <img src="doc/arquitectura.png"{width=40%, height = 40%}><br>
     <b>Figura 1</b>. Figura 1. Arquitectura HBD con aplicaciones Web y móvil.
 </p>
 
