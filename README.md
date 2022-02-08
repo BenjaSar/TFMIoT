@@ -31,9 +31,11 @@ Docker: se implementaron los diferentes sistemas empleando el contenedor docker
 ## Arquitectura del HBD
 
 Las mejoras desarrolladas permiten al prototipo integrarse con los sistemas y/o programas que actualmente posee la empresa SOFSE. La nueva arquitectura se puede observar en la figura 1.
-![arquitectura](doc/LogoHeader.png)
 
-Figura 1. Arquitectura HBD con aplicaciones Web y móvil
+<p align="center">
+    <img src="doc/arquitectura.png"><br>
+    <b>Figura 1</b>. Figura 1. Arquitectura HBD con aplicaciones Web y móvil.
+</p>
 
 Los elementos que integran el prototipo se indican a continuación:
 
