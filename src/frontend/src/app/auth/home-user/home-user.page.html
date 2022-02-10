@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start"> </ion-buttons>
+    <ion-title>Home User</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div>
+    <ion-title text-top>
+      <ion-col>
+        <ion-row> Bienvenido Pepito</ion-row>
+      </ion-col>
+    </ion-title>
+  </div>
+  <div class="ion-paddig">
+    <ion-row>
+      <ion-col>
+        <ion-button color="secondary" expand="block" [routerLink]="['/nodes']"
+          >Ver Nodos</ion-button
+        >
+        <ion-button
+          fill="solid"
+          color="secondary"
+          expand="block"
+          [routerLink]="['/home']"
+          >Salir</ion-button
+        >
+      </ion-col>
+    </ion-row>
+  </div>
+</ion-content>

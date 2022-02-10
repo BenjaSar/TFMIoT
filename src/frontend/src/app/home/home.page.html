@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title> Trenes Argentinos </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-item>
+  <ion-avatar><img src="./../../img/trenesArgentinos.png" /></ion-avatar>
+</ion-item>
+<ion-content class="auth-form">
+  <ion-grid>
+    <ion-row>
+      <ion-col align-self-center>
+        <ion-button
+          [routerLink]="['/registration']"
+          expand="block"
+          color="secondary"
+          >Crear cuenta</ion-button
+        >
+        <ion-item class="ion-text-center">
+          <ion-label>O</ion-label>
+        </ion-item>
+        <ion-button [routerLink]="['/login']" expand="block" color="danger"
+          >Sign In</ion-button
+        >
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

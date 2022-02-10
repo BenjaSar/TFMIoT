@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Registrarse</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <form [formGroup]="registrationForm" (ngSubmit)="signUpForm()" novalidate>
+    <ion-item lines="full">
+      <ion-label position="floating">Nombre</ion-label>
+      <ion-input formControlName="nombre" type="text" required></ion-input>
+    </ion-item>
+    <ion-item lines="full">
+      <ion-label position="floating">Apellido</ion-label>
+      <ion-input formControlName="apellido" type="text" required></ion-input>
+    </ion-item>
+    <ion-item lines="full">
+      <ion-label position="floating">Email</ion-label>
+      <ion-input formControlName="email" type="text" required></ion-input>
+    </ion-item>
+    <span
+      class="error ion-padding"
+      *ngIf="isSubmitted && errorControl.email.errors?.required"
+      >Un email valido es requerido</span
+    >
+    <ion-item lines="full">
+      <ion-label position="floating">Password</ion-label>
+      <ion-input
+        formControlName="password"
+        type="password"
+        required
+      ></ion-input>
+    </ion-item>
+    <ion-item lines="full">
+      <ion-label position="floating">Confirmar Password</ion-label>
+      <ion-input
+        formControlName="confirmarPassword"
+        type="password"
+        required
+      ></ion-input>
+    </ion-item>
+    <ion-row>
+      <ion-col>
+        <ion-button
+          type="submit"
+          color="danger"
+          expand="block"
+          [disabled]="registrationForm.invalid"
+          [routerLink]="['/login']"
+          (click)="showAlert()"
+          >Sign Up</ion-button
+        >
+      </ion-col>
+    </ion-row>
+  </form>
+</ion-content>

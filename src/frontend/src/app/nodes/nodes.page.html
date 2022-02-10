@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Nodos</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div>
+    <ion-button
+      id="vSensores"
+      color="secondary"
+      expand="block"
+      [routerLink]="['/sensors']"
+    >
+      Ver sensores
+    </ion-button>
+  </div>
+</ion-content>
+<!-- Circles
+<ion-spinner *ngIf="show" name="bubbles"></ion-spinner>-->
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let node of this.listadoNodes"></ion-item>
+  </ion-list>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button> </ion-fab
+></ion-content>
