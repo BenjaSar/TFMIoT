@@ -15,9 +15,19 @@
   <div class="ion-paddig">
     <ion-row>
       <ion-col>
-        <ion-button color="secondary" expand="block" [routerLink]="['/nodes']"
-          >Ver Nodos</ion-button
-        >
+        <ion-list>
+          <ion-item
+            *ngFor="let nodes of this.listadoNodes"
+            routerLink="/nodes/{{nodes.idnodes}}"
+            routerDirection="root"
+            ><ion-avatar slot="start">
+              <ion-icon size="large" name="train"></ion-icon>
+            </ion-avatar>
+            <ion-label>
+              <h3>Nodo {{nodes.idnodes}} - {{nodes.namenodes}}</h3></ion-label
+            >
+          </ion-item>
+        </ion-list>
         <ion-button
           fill="solid"
           color="secondary"
@@ -27,5 +37,12 @@
         >
       </ion-col>
     </ion-row>
+  </div>
+  <div>
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button>
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
   </div>
 </ion-content>

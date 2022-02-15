@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Node } from 'src/app/model/nodes';
+import { NodesService } from 'src/app/services/nodes.service';
 
 @Component({
   selector: 'app-home-user',
@@ -7,7 +8,13 @@ import { Node } from 'src/app/model/nodes';
   styleUrls: ['./home-user.page.scss'],
 })
 export class HomeUserPage implements OnInit {
-  constructor() {}
+  listadoNodes: Node[];
+  constructor(public nodeService: NodesService) {
+    nodeService.getListadoNodes().then((lst) => {
+      this.listadoNodes = lst;
+      console.log(lst);
+    });
+  }
 
   ngOnInit() {}
 }

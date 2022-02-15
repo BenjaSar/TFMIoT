@@ -9,7 +9,7 @@ const routerTemperatures = express.Router();
 const pg = require("../../postgres");
 const client = require("../../mqttsubscribe");
 const getAllTemperatures =
-  "SELECT Temperatures FROM MIoT.Temperatures ORDER BY idTemperature ASC";
+  "SELECT * FROM MIoT.Temperatures ORDER BY idTemperature DESC LIMIT 10";
 const getTemperaturesbyId =
   "SELECT * FROM MIoT.Temperatures WHERE  idTemperature = $1";
 const createTemperature =
@@ -39,8 +39,8 @@ routerTemperatures.get("/:pk", function (req, response) {
 });
 
 //Insert temperatures
-routerTemperatures.post("/", function (request, response, next) {
-  //temperatura = client.temperature;
+routerTemperatures.post("/", function (request, response) {
+  //temperatura = client.temperatura;
   pg.query(createTemperature, [temperatura], (err, results) => {
     if (err) {
       response.send(err).status(400);

@@ -16,4 +16,13 @@ export class NodesService {
         return listado;
       });
   }
+
+  getNodebyId(id): Promise<Node> {
+    return this._http
+      .get(this.urlApi + 'nodes/' + id)
+      .toPromise()
+      .then((node: Node) => {
+        return node;
+      });
+  }
 }

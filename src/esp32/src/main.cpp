@@ -41,11 +41,11 @@ int ledState = LOW;
 
 //volatile int interruptCounter;
 //int totalInterruptCounter = 0;
+byte mac[6];
 
 //hw_timer_t * timer = NULL;
 //portMUX_TYPE timerMux = portMUX_INITIALIZER_UNLOCKED;
  
-
 AsyncMqttClient mqttClient;
 TimerHandle_t mqttReconnectTimer;
 TimerHandle_t wifiReconnectTimer;
@@ -60,6 +60,11 @@ const long interval = 10000;        // Interval at which to publish sensor readi
 void connectToWifi() {
   Serial.println("Connecting to Wi-Fi...");
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+  WiFi.macAddress(mac);
+  String uniq =  String(mac[0],HEX) +String(mac[1],HEX) +String(mac[2],HEX) +String(mac[3],HEX) + String(mac[4],HEX) + String(mac[5],HEX);
+  Serial.println("Mi id es:");
+  Serial.println( uniq);
+  
 }
 
 /**
@@ -67,7 +72,6 @@ void connectToWifi() {
  * 
  */
 void connectToMqtt() {
-  Serial.println("Connecting to MQTT...");
   mqttClient.connect();
 }
 
@@ -77,7 +81,6 @@ void connectToMqtt() {
  * @param event 
  */
 void WiFiEvent(WiFiEvent_t event) {
-  //Serial.printf("[WiFi-event] event: %d\n", event);
   switch(event) {
     case SYSTEM_EVENT_STA_GOT_IP:
       Serial.println("WiFi connected");
@@ -99,7 +102,6 @@ void WiFiEvent(WiFiEvent_t event) {
  * @param sessionPresent 
  */
 void onMqttConnect(bool sessionPresent) {
-    Serial.println("Connected to MQTT.");
 }
 
 /**
@@ -173,7 +175,6 @@ void setup() {
   SDwriteDataLabels();
   //Invoke function to connect to wifi network
   connectToWifi();
-  
   /*Go to sleep now
   Serial.println("Going to sleep now") ;
   delay(30000);
@@ -205,7 +206,6 @@ void loop() {
       uint16_t packetIdPub = mqttClient.publish(MQTT_PUB_TEMP, 1, true, JSON_str.c_str());                            
       Serial.printf("Publishing on topic %s at QoS 1, packetId: %i\n",  MQTT_PUB_TEMP, packetIdPub);
       Serial.printf("Message: %.2f \n", temp);
-//      Serial.printf("%s\n", JSON_str.c_str());
       
       //Logging of lecture of temperatures
       logSDCard();

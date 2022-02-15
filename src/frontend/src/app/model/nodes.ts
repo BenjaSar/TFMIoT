@@ -1,14 +1,24 @@
 export class Node {
-  private _Nodes: string;
+  private _idnodes: number;
+  private _namenodes: string;
 
-  constructor(Nodes: string) {
-    this._Nodes = Nodes;
+  constructor(idnodes: number, namenodes: string) {
+    this._idnodes = idnodes;
+    this._namenodes = namenodes;
   }
 
-  public get Nodes(): string {
-    return this._Nodes;
+  public get namenodes(): string {
+    return this._namenodes;
   }
-  public set Nodes(value: string) {
-    this._Nodes = value;
+  public set namenodes(value: string) {
+    this._namenodes = value;
+  }
+
+  public get idnodes(): number {
+    return this._idnodes;
+  }
+
+  public set idnodes(value: number) {
+    this._idnodes = value;
   }
 }

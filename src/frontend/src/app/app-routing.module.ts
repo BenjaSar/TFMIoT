@@ -32,18 +32,28 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'sensors',
+    path: 'sensors/:id',
     loadChildren: () =>
       import('./sensors/sensors.module').then((m) => m.SensorsPageModule),
   },
   {
-    path: 'nodes',
+    path: 'nodes/:id',
     loadChildren: () =>
       import('./nodes/nodes.module').then((m) => m.NodesPageModule),
   },
   {
     path: 'home-user',
-    loadChildren: () => import('./auth/home-user/home-user.module').then( m => m.HomeUserPageModule)
+    loadChildren: () =>
+      import('./auth/home-user/home-user.module').then(
+        (m) => m.HomeUserPageModule
+      ),
+  },
+  {
+    path: 'temperatures/',
+    loadChildren: () =>
+      import('./temperatures/temperatures.module').then(
+        (m) => m.TemperaturesPageModule
+      ),
   },
 ];
 

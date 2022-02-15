@@ -58,7 +58,7 @@ function onMessageReceived(topic, message) {
   temperature = JSON.stringify(object);
   temperatura = JSON.stringify(object.temperature);
   axios
-    .post("http://localhost:5000/api/v1/temperatures", object, {
+    .post("http://localhost:5000/api/v1/temperatures/", object, {
       headers: {
         "Content-Type": "application/json",
       },

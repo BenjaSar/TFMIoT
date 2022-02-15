@@ -3,13 +3,18 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>Sensores</ion-title>
+    <ion-title>Temperaturas</ion-title>
   </ion-toolbar>
 </ion-header>
-
 <ion-content>
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button>
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button> </ion-fab
-></ion-content>
+  <ion-item
+    *ngFor="let temperatures of this.listTemp"
+    routerLink="/temperatures/{{temperatures.temperature}}"
+    routerDirection="root"
+  >
+    <ion-label> <h3>Valor medido {{temperatures.temperature}}</h3></ion-label>
+    <!--    <div *ngIf="this.listTemp!== null">
+      Medida del sensor:{{this.temperatures.temperature}}
+    </div>-->
+  </ion-item>
+</ion-content>

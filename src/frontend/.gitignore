@@ -108,7 +108,4 @@ e2e
 *spec.ts
 assets
 
-temp/
-*.DS_Store
-*.log
-*.swp
+
