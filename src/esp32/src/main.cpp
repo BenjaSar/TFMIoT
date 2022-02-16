@@ -39,7 +39,7 @@ float Vcc = 3.5;
 //Set state of led
 int ledState = LOW;
 
-//volatile int interruptCounter;
+//volatile int interruptCounterHHol
 //int totalInterruptCounter = 0;
 byte mac[6];
 
@@ -60,11 +60,6 @@ const long interval = 10000;        // Interval at which to publish sensor readi
 void connectToWifi() {
   Serial.println("Connecting to Wi-Fi...");
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-  WiFi.macAddress(mac);
-  String uniq =  String(mac[0],HEX) +String(mac[1],HEX) +String(mac[2],HEX) +String(mac[3],HEX) + String(mac[4],HEX) + String(mac[5],HEX);
-  Serial.println("Mi id es:");
-  Serial.println( uniq);
-  
 }
 
 /**
@@ -136,9 +131,6 @@ void onMqttDisconnect(AsyncMqttClientDisconnectReason reason) {
  * @param packetId 
  */
 void onMqttPublish(uint16_t packetId) {
-  Serial.print("Publish acknowledged.");
-  Serial.print("packetId: ");
-  Serial.println(packetId);
 }
 
 void setup() {
@@ -192,6 +184,12 @@ void loop() {
     if (currentMillis - previousMillis >= interval) {
       // Save the last time a new reading was published
       previousMillis = currentMillis;
+      
+      //Reading MacAddress
+       WiFi.macAddress(mac);
+      String uniq =  String(mac[0],HEX) +String(mac[1],HEX) +String(mac[2],HEX) +String(mac[3],HEX) + String(mac[4],HEX) + String(mac[5],HEX);
+
+      
       // Reading potentiometer value
       potValue = analogRead(potPin);
       temp = (Vcc*potValue)/4095;
@@ -202,6 +200,10 @@ void loop() {
         */
       String JSON_str = "{\"temperature\": ";
       JSON_str.concat(temp);
+      JSON_str.concat(",  \"idsensors\": ");
+      JSON_str.concat("\"");
+      JSON_str.concat(uniq);
+      JSON_str.concat("\"");
       JSON_str.concat("}"); 
       uint16_t packetIdPub = mqttClient.publish(MQTT_PUB_TEMP, 1, true, JSON_str.c_str());                            
       Serial.printf("Publishing on topic %s at QoS 1, packetId: %i\n",  MQTT_PUB_TEMP, packetIdPub);

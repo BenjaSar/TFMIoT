@@ -2,6 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Temperature } from '../model/temperature';
 import { TemperaturesService } from '../services/temperatures.service';
+import * as Highcharts from 'highcharts';
+import * as moment from 'moment';
+
+declare var require: any;
+require('highcharts/highcharts-more')(Highcharts);
+require('highcharts/modules/solid-gauge')(Highcharts);
 
 @Component({
   selector: 'app-sensors',

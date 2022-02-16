@@ -13,7 +13,7 @@ const getAllTemperatures =
 const getTemperaturesbyId =
   "SELECT * FROM MIoT.Temperatures WHERE  idTemperature = $1";
 const createTemperature =
-  "INSERT INTO MIoT.Temperatures(temperature) VALUES($1)";
+  "INSERT INTO MIoT.Temperatures(temperature, idsensors) VALUES($1, $2)";
 //Get  all of Temperatures lectures
 routerTemperatures.get("/", function (request, response) {
   pg.query(getAllTemperatures, (err, results) => {
@@ -41,12 +41,13 @@ routerTemperatures.get("/:pk", function (req, response) {
 //Insert temperatures
 routerTemperatures.post("/", function (request, response) {
   //temperatura = client.temperatura;
-  pg.query(createTemperature, [temperatura], (err, results) => {
+  pg.query(createTemperature, [temperatura, idsensors], (err, results) => {
     if (err) {
       response.send(err).status(400);
     }
     response.status(201).json(results);
-    console.log(`Temperature inserted succesfully, ${temperature}`);
+    console.log(`Temperature inserted succesfully, ${temperatura}`);
+    console.log(`Codigo sensor: ${idsensors}`);
   });
 });
 module.exports = routerTemperatures;
