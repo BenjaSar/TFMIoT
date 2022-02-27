@@ -13,12 +13,20 @@ export class SensorsService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };
   constructor(private http: HttpClient) {}
-
   getSensorList(): Observable<Sensor[]> {
     return this.http.get<Sensor[]>(this.urlApi + 'sensors/').pipe(
       tap((Sensor) => console.log(Sensor)),
       catchError(
         this.handleError<Sensor[]>('Problemas obteniendo lista de sensores', [])
+      )
+    );
+  }
+
+  getSensorById(id): Observable<Sensor> {
+    return this.http.get<Sensor>(this.urlApi + 'sensors/' + id).pipe(
+      tap((Sensor) => console.log(Sensor)),
+      catchError(
+        this.handleError<Sensor>('Problemas obteniendo el dispositivo', id)
       )
     );
   }

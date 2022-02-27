@@ -1,9 +1,16 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>temperatures</ion-title>
+  <ion-toolbar color="primary">
+    <ion-title>Record de Temperaturas</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <ion-card>
+    <ion-card-content>
+      <canvas
+        #lineCanvas
+        style="position: relative; height: 80vh; width: 90vw"
+      ></canvas>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

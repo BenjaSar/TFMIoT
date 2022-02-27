@@ -3,11 +3,11 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>Temperaturas</ion-title>
+    <ion-title>Temperatura {{idsensors}}</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-item
+  <!--<ion-item
     *ngFor="let temperatures of this.listTemp"
     routerLink="/temperatures/{{temperatures.temperature}}"
     routerDirection="root"
@@ -15,6 +15,19 @@
     <ion-label> <h3>Valor medido {{temperatures.temperature}}</h3></ion-label>
     <!--    <div *ngIf="this.listTemp!== null">
       Medida del sensor:{{this.temperatures.temperature}}
-    </div>-->
-  </ion-item>
+    </div>
+  </ion-item>-->
+  <ion-card>
+    <div id="highcharts" style="width: 100%; height: 300px"></div>
+  </ion-card>
+  <div>
+    <ion-item *ngFor="let sensors of this.listSensors"></ion-item>
+    <ion-button
+      routerLink="/temperatures/{{idsensors}}/todas"
+      routerDirection="forward"
+      expand="block"
+      color="secondary"
+      >Ver record de temperaturas</ion-button
+    >
+  </div>
 </ion-content>

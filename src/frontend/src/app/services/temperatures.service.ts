@@ -14,14 +14,27 @@ export class TemperaturesService {
   };
   constructor(private http: HttpClient) {}
 
-  getTemperatureListByIdSensor(): Observable<Temperature[]> {
-    //let url = `{$this.urlApi}/get`;
-    return this.http.get<Temperature[]>(this.urlApi + 'temperatures/').pipe(
+  getTemperatureListByIdSensor(id): Observable<Temperature[]> {
+    return this.http
+      .get<Temperature[]>(this.urlApi + 'temperatures/' + id + '/todas')
+      .pipe(
+        tap((Temperature) =>
+          console.log('Devolucion del servicio', Temperature)
+        ),
+        catchError(
+          this.handleError<Temperature[]>(
+            'Problemas obteniendo lista de mediciones'
+          )
+        )
+      );
+  }
+
+  getTemperatureByIdSensor(id): Observable<Temperature> {
+    return this.http.get<Temperature>(this.urlApi + 'temperatures/' + id).pipe(
       tap((Temperature) => console.log(Temperature)),
       catchError(
-        this.handleError<Temperature[]>(
-          'Problemas obteniendo lista de mediciones',
-          []
+        this.handleError<Temperature>(
+          'Problemas obteniendo el valor de temperatura'
         )
       )
     );

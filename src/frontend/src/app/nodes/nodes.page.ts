@@ -11,29 +11,31 @@ export class NodesPage implements OnInit {
   idnodes: string;
   show = true;
   listSensors: Sensor[];
+  device: Sensor;
 
   constructor(
     public sensorService: SensorsService,
-    private router: ActivatedRoute
+    private _routerN: ActivatedRoute
   ) {
-    sensorService.getSensorList().subscribe({
-      next: (lst) => {
-        this.listSensors = lst;
-      },
-      error: (error) => {
-        console.log(error);
-      },
-      complete: () => {
-        console.log('Tarea ejecutada');
-      },
-    });
-
     setTimeout(() => {
       this.show = false;
     }, 2500);
   }
 
   ngOnInit() {
-    this.idnodes = this.router.snapshot.paramMap.get('id');
+    this.idnodes = this._routerN.snapshot.paramMap.get('id');
+    this.getSensorList();
+  }
+
+  getSensorList() {
+    this.sensorService.getSensorList().subscribe({
+      next: (lst) => {
+        this.listSensors = lst;
+      },
+      error: (error) => {
+        console.log(error);
+      },
+      complete: () => {},
+    });
   }
 }

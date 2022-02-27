@@ -49,7 +49,7 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'temperatures/',
+    path: 'temperatures/:id/todas',
     loadChildren: () =>
       import('./temperatures/temperatures.module').then(
         (m) => m.TemperaturesPageModule
