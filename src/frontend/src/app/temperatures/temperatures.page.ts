@@ -70,13 +70,11 @@ export class TemperaturesPage implements OnInit {
         scales: {
           x: {
             display: true,
-            title: { display: true, text: 'Time' },
-            suggestedMin: 1,
-            suggestedMax: 4,
+            title: { display: true, text: 'Time', color: 'blue' },
           },
           y: {
             display: true,
-            title: { display: true, text: 'ºC' },
+            title: { display: true, text: 'ºC', color: 'blue' },
           },
         },
         plugins: {
@@ -94,6 +92,10 @@ export class TemperaturesPage implements OnInit {
         },
       },
     });
+    if (this.lineChart.data.datasets[0].data[0] > 3.5) {
+      this.lineChart.data.datasets[0].borderColor = 'red';
+      this.lineChart.update();
+    }
   }
 
   getTemperature() {

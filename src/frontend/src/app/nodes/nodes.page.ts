@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Sensor } from '../model/sensor';
 import { SensorsService } from '../services/sensors.service';
+import { UsersService } from '../services/users.service';
+import { Users } from '../model/users';
 @Component({
   selector: 'app-nodes',
   templateUrl: './nodes.page.html',
@@ -37,5 +39,9 @@ export class NodesPage implements OnInit {
       },
       complete: () => {},
     });
+  }
+
+  addNode() {
+    console.log('Se pagina añadir nodo');
   }
 }

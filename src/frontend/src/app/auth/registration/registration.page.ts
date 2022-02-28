@@ -5,7 +5,9 @@ import {
   Validators,
   FormsModule,
 } from '@angular/forms';
-import { AlertController, IonInput } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
+import { UsersService } from '../../services/users.service';
+import { Users } from '../../model/users';
 
 @Component({
   selector: 'app-registration',
@@ -18,10 +20,13 @@ export class RegistrationPage implements OnInit {
 
   constructor(
     public formBuilder: FormBuilder,
-    public alertCtrl: AlertController
+    public alertCtrl: AlertController,
+    private rUser: UsersService
   ) {}
   ngOnInit() {
     this.createSignUp();
+    this.signUpForm();
+    this.registerUser();
   }
 
   private createSignUp() {
@@ -40,6 +45,14 @@ export class RegistrationPage implements OnInit {
         Validators.compose([
           Validators.required,
           Validators.pattern('[a-zA-Z]*'),
+          Validators.minLength(5),
+          Validators.maxLength(30),
+        ]),
+      ],
+      posicion: [
+        '',
+        Validators.compose([
+          Validators.required,
           Validators.minLength(5),
           Validators.maxLength(30),
         ]),
@@ -72,7 +85,11 @@ export class RegistrationPage implements OnInit {
       console.log('Por favor proporcione los campos requeridos');
       return false;
     } else {
-      console.log(this.registrationForm.value);
+      console.log(
+        'Estos son los valores proporcionados',
+        JSON.stringify(this.registrationForm.value)
+      );
+      this.registerUser();
     }
   }
 
@@ -80,6 +97,27 @@ export class RegistrationPage implements OnInit {
     return this.registrationForm.controls;
   }
 
+  registerUser() {
+    const usersName = this.registrationForm.get('nombre').value;
+    const usersSurname = this.registrationForm.get('apellido').value;
+    const userPosition = this.registrationForm.get('posicion').value;
+    const usersEmail = this.registrationForm.get('email').value;
+    const usersPasswords = this.registrationForm.get('password').value;
+    const usersConfirmPasswords =
+      this.registrationForm.get('confirmarPassword').value;
+
+    let user: Users = new Users(
+      usersName,
+      usersSurname,
+      userPosition,
+      usersEmail,
+      usersPasswords,
+      usersConfirmPasswords
+    );
+    this.rUser.addUsers(user).then((usuario) => {
+      console.log(usuario);
+    });
+  }
   async showAlert() {
     const alert = this.alertCtrl.create({
       header: 'Registro exitoso!',

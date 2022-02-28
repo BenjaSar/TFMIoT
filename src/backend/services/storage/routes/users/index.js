@@ -65,11 +65,7 @@ routerUsers.post("/", function (request, response) {
       if (err) {
         throw err;
       }
-      response
-        .send(
-          `User added with ID: ${usersName}, ${usersSurname}, ${usersEmail}`
-        )
-        .status(201);
+      response.json(results).status(201);
       console.log("User have been inserted succesfully");
     }
   );

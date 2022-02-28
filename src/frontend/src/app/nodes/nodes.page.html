@@ -35,7 +35,7 @@
 <ion-spinner *ngIf="show" name="bubbles"></ion-spinner>-->
 <ion-content>
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button>
+    <ion-fab-button (click)="addNode()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button> </ion-fab
 ></ion-content>
