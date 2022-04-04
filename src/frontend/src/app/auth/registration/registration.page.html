@@ -7,34 +7,61 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
+  <!--<ion-col>
+    <ion-icon name="person-circle" size="large"></ion-icon>
+  </ion-col>-->
   <form [formGroup]="registrationForm" (ngSubmit)="signUpForm()" novalidate>
     <ion-item lines="full">
       <ion-label position="floating">Nombre</ion-label>
-      <ion-input formControlName="nombre" type="text" required></ion-input>
+      <ion-input
+        formControlName="nombre"
+        type="text"
+        required
+        placeholder="Nombre"
+        autofocus="required"
+      ></ion-input>
     </ion-item>
     <ion-item lines="full">
       <ion-label position="floating">Apellido</ion-label>
-      <ion-input formControlName="apellido" type="text" required></ion-input>
+      <ion-input
+        formControlName="apellido"
+        type="text"
+        required
+        placeholder="Apellido"
+        autofocus="required"
+      ></ion-input>
     </ion-item>
     <ion-item lines="full">
       <ion-label position="floating">Posicion</ion-label>
-      <ion-input formControlName="posicion" type="text" required></ion-input>
+      <ion-input
+        formControlName="posicion"
+        type="text"
+        required
+        placeholder="Posicion dentro de la empresa"
+      ></ion-input>
     </ion-item>
     <ion-item lines="full">
       <ion-label position="floating">Email</ion-label>
-      <ion-input formControlName="email" type="text" required></ion-input>
+      <ion-input
+        formControlName="email"
+        type="text"
+        required
+        placeholder="Email"
+      ></ion-input>
     </ion-item>
     <span
       class="error ion-padding"
-      *ngIf="isSubmitted && errorControl.email.errors?.required"
-      >Un email valido es requerido</span
+      *ngIf="isSubmitted && errorControl.email.errors?.pattern"
     >
+      Por favor proporcione una dirección valida.
+    </span>
     <ion-item lines="full">
       <ion-label position="floating">Password</ion-label>
       <ion-input
         formControlName="password"
         type="password"
         required
+        placeholder="Password"
       ></ion-input>
     </ion-item>
     <ion-item lines="full">
@@ -43,18 +70,22 @@
         formControlName="confirmarPassword"
         type="password"
         required
+        placeholder="Confirmar password"
       ></ion-input>
     </ion-item>
     <ion-row>
       <ion-col>
         <ion-button
           type="submit"
-          color="danger"
           expand="block"
           [disabled]="registrationForm.invalid"
           [routerLink]="['/login']"
           (click)="showAlert()"
+          class="signUp"
           >Sign Up</ion-button
+        >
+        <ion-button color="danger" expand="block" [routerLink]="['/home']"
+          >Cancelar</ion-button
         >
       </ion-col>
     </ion-row>

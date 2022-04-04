@@ -14,7 +14,7 @@ export class UsersService {
 
   async addUsers(user: Users) {
     return await this._http
-      .post(this.urlApi + 'users/', {
+      .post(this.urlApi + 'users/create', {
         usersName: user.usersName,
         usersSurname: user.usersSurname,
         userPosition: user.userPosition,
@@ -25,6 +25,19 @@ export class UsersService {
       .toPromise()
       .then((result) => {
         return result;
+      });
+  }
+
+  //TODO login user
+  loginUser() {}
+
+  //TODO obtener usuario por id
+  async getUserById(id): Promise<Users> {
+    return await this._http
+      .get(this.urlApi + 'users/' + id)
+      .toPromise()
+      .then((user: Users) => {
+        return user;
       });
   }
 }

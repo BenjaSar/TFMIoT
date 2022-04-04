@@ -25,4 +25,16 @@ export class NodesService {
         return node;
       });
   }
+
+  async createNode(node: Node) {
+    return await this._http
+      .post(this.urlApi + 'nodes/create', {
+        idNodes: node.idnodes,
+        namenodes: node.namenodes,
+      })
+      .toPromise()
+      .then((node: Node) => {
+        return node;
+      });
+  }
 }

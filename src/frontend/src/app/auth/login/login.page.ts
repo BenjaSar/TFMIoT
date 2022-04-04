@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ContentChild, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { IonInput } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -9,6 +10,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class LoginPage implements OnInit {
   public loginForm: FormGroup;
   isSubmitted = false;
+  showPassword = false;
+  @ContentChild(IonInput) input: IonInput;
 
   constructor(public fBuilder: FormBuilder) {}
 
@@ -42,5 +45,10 @@ export class LoginPage implements OnInit {
 
   get errorControl() {
     return this.loginForm.controls;
+  }
+
+  toggleShow() {
+    this.showPassword = !this.showPassword;
+    this.input.type = this.showPassword ? 'text' : 'password';
   }
 }

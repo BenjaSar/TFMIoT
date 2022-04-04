@@ -1,7 +1,13 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ContentChild,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { Temperature } from '../model/temperature';
 import { TemperaturesService } from '../services/temperatures.service';
-import { Chart } from 'chart.js';
+import { Chart, ChartType } from 'chart.js';
 import zoomPlugin from 'chartjs-plugin-zoom';
 import { ActivatedRoute } from '@angular/router';
 Chart.register(zoomPlugin);
@@ -13,7 +19,6 @@ Chart.register(zoomPlugin);
 })
 export class TemperaturesPage implements OnInit {
   @ViewChild('lineCanvas') private lineCanvas: ElementRef;
-
   lineChart: Chart;
   listTemp: Temperature[];
   datos: any = [];
@@ -32,10 +37,12 @@ export class TemperaturesPage implements OnInit {
   }
 
   lineChartMethod() {
+    const labels = this.label[0].labels;
     this.lineChart = new Chart(this.lineCanvas.nativeElement, {
       type: 'line',
       data: {
-        labels: this.label[0].labels,
+        //labels: this.label[0].labels,
+        labels: labels,
         datasets: [
           {
             label: 'Temperature',
@@ -71,6 +78,15 @@ export class TemperaturesPage implements OnInit {
           x: {
             display: true,
             title: { display: true, text: 'Time', color: 'blue' },
+            ticks: {
+              maxTicksLimit: labels.length / 5,
+              /*callback: function (value) {
+                // Hide every 2nd tick label
+                //return index % 2 === 0 ? this.getLabelForValue(val) : '';
+                //if (!(index % 4)) return val;
+                return this.getLabelForValue(value).substring(0, 6);
+              },*/
+            },
           },
           y: {
             display: true,

@@ -55,6 +55,14 @@ const routes: Routes = [
         (m) => m.TemperaturesPageModule
       ),
   },
+
+  {
+    path: 'add-nodes',
+    loadChildren: () =>
+      import('./nodes/add-nodes/add-nodes.module').then(
+        (m) => m.AddNodesPageModule
+      ),
+  },
 ];
 
 @NgModule({

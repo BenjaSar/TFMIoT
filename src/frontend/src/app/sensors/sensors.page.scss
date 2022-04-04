@@ -2,3 +2,20 @@
   height: 200px;
   width: 200px;
 }
+
+ion-title {
+  color: white;
+  font-size: 1.5em;
+  display: inline-flex;
+  font-family: sans-serif;
+  font-weight: bolder;
+}
+
+ion-button.recordTemperaturas {
+  --background: #46b5ff;
+  color: white;
+  font-size: 0.8em;
+  display: inline-flex;
+  font-family: sans-serif;
+  font-weight: bolder;
+}

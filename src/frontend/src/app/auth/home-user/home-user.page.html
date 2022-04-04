@@ -1,14 +1,14 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start"> </ion-buttons>
-    <ion-title>Home User</ion-title>
+    <ion-title>Home</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content>
   <div>
-    <ion-title text-top>
+    <ion-title text-top class="bienvenida">
       <ion-col>
-        <ion-row> Bienvenido Pepito</ion-row>
+        <ion-row>Bienvenido</ion-row>
       </ion-col>
     </ion-title>
   </div>
@@ -33,14 +33,16 @@
           color="secondary"
           expand="block"
           [routerLink]="['/home']"
+          (click)="presentAlertConfirm()"
+          class="salir"
           >Salir</ion-button
         >
       </ion-col>
     </ion-row>
   </div>
   <div>
-    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-      <ion-fab-button>
+    <ion-fab vertical="bottom" horizontal="end" slot="flex">
+      <ion-fab-button class="addButton" (click)="addNodes()">
         <ion-icon name="add"></ion-icon>
       </ion-fab-button>
     </ion-fab>

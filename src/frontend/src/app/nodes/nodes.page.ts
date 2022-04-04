@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Sensor } from '../model/sensor';
+import { Router } from '@angular/router';
 import { SensorsService } from '../services/sensors.service';
 import { UsersService } from '../services/users.service';
 import { Users } from '../model/users';
@@ -17,7 +18,8 @@ export class NodesPage implements OnInit {
 
   constructor(
     public sensorService: SensorsService,
-    private _routerN: ActivatedRoute
+    private _routerN: ActivatedRoute,
+    private _router: Router
   ) {
     setTimeout(() => {
       this.show = false;
@@ -41,7 +43,8 @@ export class NodesPage implements OnInit {
     });
   }
 
-  addNode() {
-    console.log('Se pagina añadir nodo');
+  //TODO: Hacer página añadir sensores
+  addSensors() {
+    console.log('Página para añadir sensor');
   }
 }
