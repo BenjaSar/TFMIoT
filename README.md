@@ -13,7 +13,7 @@ Autor: FS - 2021
 1. [Introduccion general](#Introduccion)
 2. [Arquitectura del HBD](#Arquitectura)
 3. [Organización del proyecto](#Organizacion)
-4. [Como ejecutar la aplicacion](#eAplicacion)
+4. [Como ejecutar la aplicacion](#Aplicacion)
 5. [Licencia](#Licencia)
 6. [Agradecimientos](#Agradecimientos)
 
@@ -34,7 +34,7 @@ Las mejoras desarrolladas permiten al prototipo integrarse con los sistemas y/o 
 
 <p align="center">
     <img src="doc/arquitectura.png"{width=25%, height = 25%}><br>
-    <b>Figura 1</b>. Figura 1. Arquitectura HBD con aplicaciones Web y móvil.
+    <b>Figura 1</b>. Arquitectura HBD con aplicaciones Web y móvil.
 </p>
 
 Los elementos que integran el prototipo se indican a continuación:

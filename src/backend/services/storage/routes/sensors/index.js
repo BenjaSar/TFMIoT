@@ -19,7 +19,7 @@ routerSensors.get("/", function (req, response) {
 
 //Get sensor by id
 routerSensors.get("/:pk", function (req, response) {
-  const id = parseInt(req.params.pk);
+  const id = req.params.pk;
 
   pg.query(getSensorById, [id], (err, results) => {
     if (err) {

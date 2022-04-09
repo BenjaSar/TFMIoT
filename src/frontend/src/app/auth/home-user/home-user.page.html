@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start"> </ion-buttons>
+    <ion-title>Home</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div>
+    <ion-title text-top class="bienvenida">
+      <ion-col>
+        <ion-row>Bienvenido</ion-row>
+      </ion-col>
+    </ion-title>
+  </div>
+  <div class="ion-paddig">
+    <ion-row>
+      <ion-col>
+        <ion-list>
+          <ion-item
+            *ngFor="let nodes of this.listadoNodes"
+            routerLink="/nodes/{{nodes.idnodes}}"
+            routerDirection="root"
+            ><ion-avatar slot="start">
+              <ion-icon size="large" name="train"></ion-icon>
+            </ion-avatar>
+            <ion-label>
+              <h3>Nodo {{nodes.idnodes}} - {{nodes.namenodes}}</h3></ion-label
+            >
+          </ion-item>
+        </ion-list>
+        <ion-button
+          fill="solid"
+          color="secondary"
+          expand="block"
+          [routerLink]="['/home']"
+          (click)="presentAlertConfirm()"
+          class="salir"
+          >Salir</ion-button
+        >
+      </ion-col>
+    </ion-row>
+  </div>
+  <div>
+    <ion-fab vertical="bottom" horizontal="end" slot="flex">
+      <ion-fab-button class="addButton" (click)="addNodes()">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </div>
+</ion-content>

@@ -9,16 +9,17 @@ const routerTemperatures = express.Router();
 const pg = require("../../postgres");
 const client = require("../../mqttsubscribe");
 const getAllTemperatures =
-  "SELECT Temperatures FROM MIoT.Temperatures ORDER BY idTemperature ASC";
+  "SELECT * FROM MIoT.Temperatures where idsensors=$1 ORDER BY idTemperature DESC LIMIT 20";
 const getTemperaturesbyId =
-  "SELECT * FROM MIoT.Temperatures WHERE  idTemperature = $1";
+  "SELECT * FROM MIoT.Temperatures WHERE  idsensors = $1 ORDER BY datestime DESC LIMIT 1";
 const createTemperature =
-  "INSERT INTO MIoT.Temperatures(temperature) VALUES($1)";
+  "INSERT INTO MIoT.Temperatures(temperature, idsensors) VALUES($1, $2)";
 //Get  all of Temperatures lectures
-routerTemperatures.get("/", function (request, response) {
-  pg.query(getAllTemperatures, (err, results) => {
+routerTemperatures.get("/:id/todas", function (req, response) {
+  const id = req.params.id;
+  pg.query(getAllTemperatures, [id], (err, results) => {
     if (err) {
-      res.send(err).status(400);
+      response.send(err).status(400);
     }
     response.status(200).json(results.rows);
     console.log(results.rows);
@@ -27,7 +28,7 @@ routerTemperatures.get("/", function (request, response) {
 
 //Get temperatures by id
 routerTemperatures.get("/:pk", function (req, response) {
-  const id = parseInt(req.params.pk);
+  const id = req.params.pk;
 
   pg.query(getTemperaturesbyId, [id], (err, results) => {
     if (err) {
@@ -39,14 +40,16 @@ routerTemperatures.get("/:pk", function (req, response) {
 });
 
 //Insert temperatures
-routerTemperatures.post("/", function (request, response, next) {
-  //temperatura = client.temperature;
-  pg.query(createTemperature, [temperatura], (err, results) => {
+routerTemperatures.post("/", function (request, response) {
+  //temperatura = client.temperatura;
+  //idsensors = client.idsensors;
+  pg.query(createTemperature, [temperatura, idsensors], (err, results) => {
     if (err) {
       response.send(err).status(400);
     }
     response.status(201).json(results);
-    console.log(`Temperature inserted succesfully, ${temperature}`);
+    console.log(`Temperature inserted succesfully, ${temperatura}`);
+    console.log(`Codigo sensor: ${request.body.idsensors}`);
   });
 });
 module.exports = routerTemperatures;

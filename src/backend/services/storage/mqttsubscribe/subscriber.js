@@ -55,10 +55,11 @@ client.on("connect", function () {
 function onMessageReceived(topic, message) {
   const parsedMessage = message.toString();
   object = JSON.parse(parsedMessage);
-  temperature = JSON.stringify(object);
-  temperatura = JSON.stringify(object.temperature);
+  temperatura = object.temperature;
+  idsensors = object.idsensors;
+  //temperatura = JSON.stringify(object);
   axios
-    .post("http://localhost:5000/api/v1/temperatures", object, {
+    .post("http://localhost:5000/api/v1/temperatures/", object, {
       headers: {
         "Content-Type": "application/json",
       },

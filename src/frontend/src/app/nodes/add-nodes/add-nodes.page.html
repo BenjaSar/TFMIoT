@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Configuración nodo</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="configurationForm" (ngSubmit)="configForm()" novalidate>
+    <ion-item lines="full">
+      <ion-label position="floating">Id del nodo</ion-label>
+      <ion-input
+        formControlName="idnodes"
+        type="string"
+        required
+        placeholder="Id del nodo"
+      ></ion-input>
+    </ion-item>
+    <ion-item lines="full">
+      <ion-label position="floating">Nombre del nodo</ion-label>
+
+      <ion-input
+        formControlName="namenodes"
+        type="text"
+        required
+        placeholder="Nombre del nodo"
+        autofocus="required"
+      ></ion-input>
+      <span
+        class="error ion-padding"
+        *ngIf="isSubmitted && errorControl.namenodes.errors?.pattern"
+      >
+        Por favor proporcione un nombre de nodo válido.
+      </span>
+    </ion-item>
+    <ion-row>
+      <ion-col>
+        <ion-button
+          type="submit"
+          expand="block"
+          [disabled]="configurationForm.invalid"
+          [routerLink]="['/home-user']"
+          (click)="showAlertConfig()"
+          class="registerNode"
+          >Registrar nodo</ion-button
+        >
+        <ion-button color="danger" expand="block" [routerLink]="['/home']"
+          >Cancelar</ion-button
+        >
+      </ion-col>
+    </ion-row>
+  </form>
+</ion-content>

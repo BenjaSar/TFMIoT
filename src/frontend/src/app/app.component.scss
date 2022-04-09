@@ -1,0 +1,48 @@
+* {
+  font-family: lato;
+}
+
+.menu-header-bg {
+  height: 100px;
+  width: 350px;
+  background-color: #1290d2;
+  border-radius: 1px 1px 1px 1px;
+}
+
+.header-content {
+  position: absolute;
+  top: 30px;
+  left: 15px;
+  display: flex;
+  align-items: center;
+}
+
+h2 {
+  font-weight: 200;
+}
+
+p {
+  font-size: 12px;
+  color: #e4e4e4;
+  font-weight: 100;
+  letter-spacing: 0.4px;
+}
+
+ion-title {
+  color: white;
+  font-size: 1.5em;
+  display: inline-flex;
+  font-family: sans-serif;
+  font-weight: bolder;
+}
+
+ion-toolbar {
+  --background: #805acb;
+}
+
+ion-label.label {
+  color: black;
+  font-size: 1em;
+  font-family: sans-serif;
+  font-weight: bolder;
+}
