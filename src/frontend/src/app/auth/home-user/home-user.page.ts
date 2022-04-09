@@ -41,6 +41,7 @@ export class HomeUserPage implements OnInit {
 
   ngOnInit() {
     this.getUser();
+    this.addNodes();
   }
   async presentAlertConfirm() {
     const alert = await this.alertController.create({

@@ -27,20 +27,9 @@
       <ion-item lines="full">
         <ion-icon name="lock-closed"></ion-icon>
 
-        <ion-icon
-          class="show-option"
-          [hidden]="showPassword"
-          name="eye-off"
-        ></ion-icon>
-        <ion-icon
-          class="hide-option"
-          [hidden]="!showPassword"
-          name="eye"
-        ></ion-icon>
-
         <ion-input
           formControlName="password"
-          type="text"
+          type="password"
           required
           placeholder="  Password"
         ></ion-input> </ion-item

@@ -1,5 +1,8 @@
 <ion-header>
   <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home"></ion-back-button>
+    </ion-buttons>
     <ion-title>Configuración nodo</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -23,7 +26,6 @@
         type="text"
         required
         placeholder="Nombre del nodo"
-        autofocus="required"
       ></ion-input>
       <span
         class="error ion-padding"
