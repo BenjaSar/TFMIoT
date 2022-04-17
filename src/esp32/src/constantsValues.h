@@ -2,7 +2,7 @@
 #define CONSTANTS_VALUES_H
 
 // The potentiometer is connected to GPIO 32 (Analog ADC1_CH6) 
-const uint8_t potPin = 32;
+const uint8_t AnalogPin = 32;
 //Led is connecto to GPIO 33
 const uint8_t ledPin = 13;
 //Wake up pin

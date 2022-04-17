@@ -33,8 +33,8 @@ extern "C" {
 #include "constantsValues.h"
 
 // Variables to hold sensor readings
-int potValue = 0;
-float Vcc = 3.5;
+double sensorValue = 0;
+//float Vcc = 3.5;
 
 //Set state of led
 int ledState = LOW;
@@ -143,7 +143,7 @@ void setup() {
    * @brief Interruption which enabling the GPIO 13
    * 
    */
- // esp_sleep_enable_ext0_wakeup((gpio_num_t)wakeUp_pin, 0);   
+ //esp_sleep_enable_ext0_wakeup((gpio_num_t)wakeUp_pin, 0);   
    
   //Timer configuration 
     /*timer = timerBegin(0, 80, true);
@@ -191,9 +191,9 @@ void loop() {
 
       
       // Reading potentiometer value
-      potValue = analogRead(potPin);
-      temp = (Vcc*potValue)/4095;
-      if(temp>2.5){
+      sensorValue = analogRead(AnalogPin);
+      temp = (sensorValue);
+      if(temp>0){
        /**
         * @brief  Publish an MQTT message on topic esp32/temperature
         * 
@@ -211,6 +211,8 @@ void loop() {
       
       //Logging of lecture of temperatures
       logSDCard();
+
+      //Alarm of overtemperature
       if (ledState == LOW) {
         ledState= HIGH;
         digitalWrite(ledPin, HIGH);
