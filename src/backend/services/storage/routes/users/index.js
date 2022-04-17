@@ -100,7 +100,8 @@ routerUsers.post("/create", function (request, response) {
 
 //Login user
 routerUsers.post("/login", (req, response) => {
-  //uLogin = userLogin();
+  //Validate if user exists in our database
+
   uLogin = [];
   pg.query(getAllUsersLogin, (err, results) => {
     if (err) {
@@ -109,7 +110,7 @@ routerUsers.post("/login", (req, response) => {
     uLogin = results.rows;
     console.log("Estoy aqui".uLogin);
   });
-  /*
+
   const { usersEmail, usersPasswords } = req.body;
   const user = uLogin((u) => {
     return u.usersEmail === usersEmail && u.usersPasswords === usersPasswords;
@@ -125,7 +126,7 @@ routerUsers.post("/login", (req, response) => {
     });
   } else {
     response.send("Username or password incorrect");
-  }*/
+  }
 });
 //Edit user by Id
 routerUsers.put("/:pk", function (request, response) {

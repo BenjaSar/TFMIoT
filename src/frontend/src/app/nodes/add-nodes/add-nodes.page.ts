@@ -39,7 +39,7 @@ export class AddNodesPage implements OnInit {
         '',
         Validators.compose([
           Validators.required,
-          Validators.pattern(/^-?([a-zA-Z ]\d*)?$/),
+          Validators.pattern('[a-zA-Z]*'),
           Validators.minLength(5),
           Validators.maxLength(25),
         ]),
@@ -65,11 +65,13 @@ export class AddNodesPage implements OnInit {
     const idNodes = this.configurationForm.get('idnodes').value;
     const namenodes = this.configurationForm.get('namenodes').value;
 
-    let nodes: Node = new Node(idNodes, namenodes);
+    if (idNodes != '' && namenodes != '') {
+      let nodes: Node = new Node(idNodes, namenodes);
 
-    this.rNode.createNode(nodes).then((nodo) => {
-      console.log(nodo);
-    });
+      this.rNode.createNode(nodes).then((nodo) => {
+        console.log(nodo);
+      });
+    }
   }
 
   async showAlertConfig() {
