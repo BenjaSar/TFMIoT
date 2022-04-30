@@ -34,7 +34,7 @@ extern "C" {
 
 // Variables to hold sensor readings
 double sensorValue = 0;
-//float Vcc = 3.5;
+float Vcc = 3.3;
 
 //Set state of led
 int ledState = LOW;
@@ -136,6 +136,7 @@ void onMqttPublish(uint16_t packetId) {
 void setup() {
   Serial.begin(115200);
   Serial.println();
+
   // Initialize pin led
   pinMode(ledPin, OUTPUT); 
 
@@ -186,14 +187,15 @@ void loop() {
       previousMillis = currentMillis;
       
       //Reading MacAddress
-       WiFi.macAddress(mac);
+      WiFi.macAddress(mac);
       String uniq =  String(mac[0],HEX) +String(mac[1],HEX) +String(mac[2],HEX) +String(mac[3],HEX) + String(mac[4],HEX) + String(mac[5],HEX);
 
       
       // Reading potentiometer value
       sensorValue = analogRead(AnalogPin);
-      temp = (sensorValue);
-      if(temp>0){
+      temp = ((sensorValue*Vcc)/4095) + 50;
+      Serial.println(temp);
+      if(temp>50){
        /**
         * @brief  Publish an MQTT message on topic esp32/temperature
         * 

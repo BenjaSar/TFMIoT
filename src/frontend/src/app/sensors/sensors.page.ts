@@ -146,18 +146,18 @@ export class SensorsPage implements OnInit {
         },
         plotBands: [
           {
-            from: 0,
-            to: 3,
+            from: 50,
+            to: 100,
             color: '#55BF3B', // green
           },
           {
-            from: 3,
-            to: 6,
+            from: 100,
+            to: 150,
             color: '#DDDF0D', // yellow
           },
           {
-            from: 6,
-            to: 10,
+            from: 150,
+            to: 200,
             color: '#DF5353', // red
           },
         ],

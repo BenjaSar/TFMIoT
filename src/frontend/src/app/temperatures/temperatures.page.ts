@@ -108,7 +108,7 @@ export class TemperaturesPage implements OnInit {
         },
       },
     });
-    if (this.lineChart.data.datasets[0].data[0] > 3.5) {
+    if (this.lineChart.data.datasets[0].data[0] > 120) {
       this.lineChart.data.datasets[0].borderColor = 'red';
       this.lineChart.update();
     }

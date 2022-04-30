@@ -55,9 +55,11 @@ extern void initSD(){
     return;
   }
   Serial.println("Initializing SD card...");
+  
+  // Init failed
   if (!SD.begin(SD_CS)) {
       Serial.println("ERROR - SD card initialization failed!");
-    return; // init failed
+    return; 
     }
   }  
 
