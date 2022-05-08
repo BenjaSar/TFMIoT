@@ -32,9 +32,15 @@ extern "C" {
 //File that contains constants values
 #include "constantsValues.h"
 
+//esp_sleep_enable_ext0_wakeup(wakeUp_pin, 1);
+
 // Variables to hold sensor readings
-double sensorValue = 0;
+int sensorValue = 0;
 float Vcc = 3.3;
+//Variable to store the conversion of sensorValue
+double ValSignal_mv = 0;
+//Temperature sensing head
+int Tsensing_head = 50;
 
 //Set state of led
 int ledState = LOW;
@@ -136,7 +142,6 @@ void onMqttPublish(uint16_t packetId) {
 void setup() {
   Serial.begin(115200);
   Serial.println();
-
   // Initialize pin led
   pinMode(ledPin, OUTPUT); 
 
@@ -144,7 +149,7 @@ void setup() {
    * @brief Interruption which enabling the GPIO 13
    * 
    */
- //esp_sleep_enable_ext0_wakeup((gpio_num_t)wakeUp_pin, 0);   
+  esp_sleep_enable_ext0_wakeup((gpio_num_t)wakeUp_pin, level);   
    
   //Timer configuration 
     /*timer = timerBegin(0, 80, true);
@@ -168,15 +173,15 @@ void setup() {
   SDwriteDataLabels();
   //Invoke function to connect to wifi network
   connectToWifi();
-  /*Go to sleep now
+  //Go to sleep now
   Serial.println("Going to sleep now") ;
-  delay(30000);
+  delay(time_to_sleep);
   esp_deep_sleep_start(); 
-  Serial.println("This will never be printed");*/
+  Serial.println("This will never be printed");
 }
 
 void loop() {
-  /**
+  /** 
    * @brief Every X number of seconds (interval = 10 seconds) 
    * it publishes a new MQTT message
    */
@@ -191,11 +196,16 @@ void loop() {
       String uniq =  String(mac[0],HEX) +String(mac[1],HEX) +String(mac[2],HEX) +String(mac[3],HEX) + String(mac[4],HEX) + String(mac[5],HEX);
 
       
-      // Reading potentiometer value
+      // Reading sensor value
       sensorValue = analogRead(AnalogPin);
-      temp = ((sensorValue*Vcc)/4095) + 50;
-      Serial.println(temp);
-      if(temp>50){
+      
+      ValSignal_mv = ((sensorValue*Vcc)/4095);
+      Serial.println(ValSignal_mv);
+      
+      //Calculate the temperature value
+      temp = (350/Vcc)*ValSignal_mv;
+
+      if(temp>100){
        /**
         * @brief  Publish an MQTT message on topic esp32/temperature
         * 

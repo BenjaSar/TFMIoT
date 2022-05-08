@@ -123,8 +123,8 @@ export class SensorsPage implements OnInit {
       },
       // the value axis
       yAxis: {
-        min: 0,
-        max: 10,
+        min: 50,
+        max: 200,
 
         minorTickInterval: 'auto',
         minorTickWidth: 1,
