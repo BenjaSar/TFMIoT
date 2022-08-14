@@ -1,15 +1,14 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
-    </ion-buttons>
-    <ion-title>Registrarse</ion-title>
+    <ion-title class="ion-text-center">Registrarse</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <!--<ion-col>
-    <ion-icon name="person-circle" size="large"></ion-icon>
-  </ion-col>-->
+  <ion-row class="ion-justify-content-center">
+    <ion-col align-self-center>
+      <ion-icon name="person-circle"></ion-icon>
+    </ion-col>
+  </ion-row>
   <form [formGroup]="registrationForm" (ngSubmit)="signUpForm()" novalidate>
     <ion-item lines="full">
       <ion-label position="floating">Nombre</ion-label>

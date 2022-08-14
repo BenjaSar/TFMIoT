@@ -15,10 +15,9 @@
 #container p {
   font-size: 16px;
   line-height: 22px;
-
   color: #8c8c8c;
-
-  margin: 0;
+  margin: auto;
+  vertical-align: middle;
 }
 
 #container a {
@@ -30,8 +29,9 @@ ion-img {
   display: inline-block;
   margin-left: auto;
   margin-right: auto;
-  width: 50%;
+  width: 75%;
   border-radius: 10px;
+  vertical-align: middle;
 }
 
 ion-title {
@@ -39,7 +39,8 @@ ion-title {
   font-size: 1em;
   display: center;
   font-family: sans-serif;
-  font-weight: bold;
+  font-weight: bolder;
+  margin: auto;
 }
 
 ion-button.registration {

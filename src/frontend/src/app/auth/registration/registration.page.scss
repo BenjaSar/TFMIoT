@@ -20,13 +20,18 @@
 }
 
 ion-icon {
-  font-size: 64px;
+  font-size: 70px;
+  vertical-align: middle;
+  position: center;
+  display: center;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 ion-title {
   color: white;
   font-size: 1.5em;
-  display: inline-flex;
+  display: center;
   font-family: sans-serif;
   font-weight: bolder;
 }

@@ -59,11 +59,11 @@ export class HomeUserPage implements OnInit {
           },
         },
         {
-          text: 'Okay',
+          text: 'Ok',
           id: 'confirm-button',
           role: 'destructive',
           handler: () => {
-            console.log('Confirm Okay');
+            console.log('Confirm Ok');
           },
         },
       ],
