@@ -1,8 +1,11 @@
 <ion-header>
-  <ion-toolbar color="primary">
-    <ion-title class="ion-text-center">Login</ion-title>
-  </ion-toolbar>
+  <div>
+    <ion-toolbar color="primary">
+      <ion-title class="ion-text-center">Login</ion-title>
+    </ion-toolbar>
+  </div>
 </ion-header>
+
 <ion-content>
   <form [formGroup]="loginForm" (ngSubmit)="submitForm()" novalidate>
     <ion-item lines="full">

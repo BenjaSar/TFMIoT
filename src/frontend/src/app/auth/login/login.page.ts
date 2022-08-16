@@ -1,6 +1,8 @@
 import { Component, ContentChild, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IonInput } from '@ionic/angular';
+import { Users } from '../../model/users';
+import { UsersService } from 'src/app/services/users.service';
 
 @Component({
   selector: 'app-login',
@@ -13,13 +15,9 @@ export class LoginPage implements OnInit {
   showPassword = false;
   @ContentChild(IonInput) input: IonInput;
 
-  constructor(public fBuilder: FormBuilder) {}
+  constructor(public fBuilder: FormBuilder, public uServices: UsersService) {}
 
   ngOnInit() {
-    this.createForm();
-  }
-
-  private createForm() {
     this.loginForm = this.fBuilder.group({
       email: [
         '',
@@ -33,6 +31,14 @@ export class LoginPage implements OnInit {
     });
   }
 
+  lUser() {
+    const email = this.loginForm.get('email').value;
+    const password = this.loginForm.get('password').value;
+    const user = { email, password };
+    this.uServices.loginUser(user).subscribe((data) => {
+      console.log(data);
+    });
+  }
   submitForm() {
     this.isSubmitted = true;
     if (!this.loginForm.valid) {
