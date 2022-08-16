@@ -18,6 +18,7 @@ export class HomeUserPage implements OnInit {
   listadoNodes: Node[];
   user: Users;
   idUser: string;
+
   constructor(
     public nodeService: NodesService,
     public uServices: UsersService,
@@ -40,8 +41,7 @@ export class HomeUserPage implements OnInit {
   }
 
   ngOnInit() {
-    this.getUser();
-    this.addNodes();
+    // this.getUser();
   }
   async presentAlertConfirm() {
     const alert = await this.alertController.create({
@@ -59,11 +59,11 @@ export class HomeUserPage implements OnInit {
           },
         },
         {
-          text: 'Okay',
+          text: 'Ok',
           id: 'confirm-button',
           role: 'destructive',
           handler: () => {
-            console.log('Confirm Okay');
+            console.log('Confirm Ok');
           },
         },
       ],
@@ -72,12 +72,12 @@ export class HomeUserPage implements OnInit {
     await alert.present();
   }
 
-  getUser() {
+  /* getUser() {
     this.uServices.getUserById(this.idUser).then((u) => {
       this.user = u;
       console.log('Este es mi usuario', u);
     });
-  }
+  }*/
 
   //TODO: Hacer página añadir nodos
   addNodes() {

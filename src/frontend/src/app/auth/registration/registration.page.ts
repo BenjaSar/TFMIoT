@@ -24,12 +24,6 @@ export class RegistrationPage implements OnInit {
     private rUser: UsersService
   ) {}
   ngOnInit() {
-    this.createSignUp();
-    this.signUpForm();
-    this.registerUser();
-  }
-
-  private createSignUp() {
     this.registrationForm = this.formBuilder.group({
       nombre: [
         '',
@@ -68,7 +62,11 @@ export class RegistrationPage implements OnInit {
       password: ['', [Validators.required, Validators.minLength(8)]],
       confirmarPassword: ['', [Validators.required, Validators.minLength(8)]],
     });
+    this.signUpForm();
+    this.registerUser();
   }
+
+  private createSignUp() {}
 
   validatePassword() {
     return (
@@ -79,7 +77,6 @@ export class RegistrationPage implements OnInit {
 
   signUpForm() {
     this.isSubmitted = true;
-
     if (!this.registrationForm.valid && !this.validatePassword()) {
       console.log(this.validatePassword());
       console.log('Por favor proporcione los campos requeridos');
@@ -114,9 +111,17 @@ export class RegistrationPage implements OnInit {
       usersPasswords,
       usersConfirmPasswords
     );
-    this.rUser.addUsers(user).then((usuario) => {
-      console.log(usuario);
-    });
+    if (
+      usersName !== '' &&
+      usersSurname !== '' &&
+      userPosition !== '' &&
+      usersEmail !== '' &&
+      usersPasswords !== ''
+    ) {
+      this.rUser.addUsers(user).then((usuario) => {
+        console.log(usuario);
+      });
+    }
   }
   async showAlert() {
     const alert = this.alertCtrl.create({

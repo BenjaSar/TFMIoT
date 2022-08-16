@@ -20,11 +20,6 @@ export class AddNodesPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.createNode();
-    this.configForm();
-    this.registerNode();
-  }
-  private createNode() {
     this.configurationForm = this.configBuilder.group({
       idnodes: [
         '',
@@ -45,6 +40,8 @@ export class AddNodesPage implements OnInit {
         ]),
       ],
     });
+    this.configForm();
+    this.registerNode();
   }
 
   configForm() {
@@ -64,10 +61,8 @@ export class AddNodesPage implements OnInit {
   registerNode() {
     const idNodes = this.configurationForm.get('idnodes').value;
     const namenodes = this.configurationForm.get('namenodes').value;
-
-    if (idNodes != '' && namenodes != '') {
-      let nodes: Node = new Node(idNodes, namenodes);
-
+    let nodes: Node = new Node(idNodes, namenodes);
+    if (idNodes !== '' && namenodes !== '') {
       this.rNode.createNode(nodes).then((nodo) => {
         console.log(nodo);
       });
