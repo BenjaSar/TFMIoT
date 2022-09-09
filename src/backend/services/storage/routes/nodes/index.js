@@ -17,11 +17,11 @@ routerNodes.get("/", function (req, response) {
 });
 
 //Get nodes by Id
-routerNodes.get("/:pk", function (request, response) {
-  const id = parseInt(request.params.idNodes);
-  pg.query(getNodeById, [id], (err, results) => {
+routerNodes.get("/:id", function (request, response) {
+  const idNodes = parseInt(request.params.id);
+  pg.query(getNodeById, [idNodes], (err, results) => {
     if (err) {
-      throw err;
+      response.send(err).status(400);
     }
     response.status(200).json(results.rows);
     console.log(results.rows);
@@ -29,13 +29,14 @@ routerNodes.get("/:pk", function (request, response) {
 });
 //Create Nodes
 routerNodes.post("/create", function (req, res) {
-  const { idNodes, namenodes } = req.body;
+  let { idNodes, namenodes } = req.body;
   pg.query(createNodes, [idNodes, namenodes], (err, results) => {
     if (err) {
-      throw err;
+      return err;
     }
-    res.send("Node has been inserted succesfully").status(201);
-    //.json(results.rows)
+    if (results) {
+      res.send("Node has been inserted succesfully").status(201);
+    }
   });
 });
 

@@ -241,6 +241,8 @@ void loop()
           ledState = LOW;
           digitalWrite(ledPin, LOW);
         }
+
+        Serial.println(temp);
       }
     }
   }

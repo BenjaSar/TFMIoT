@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Users } from '../model/users';
 import { Observable } from 'rxjs';
+import { shareReplay } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -32,7 +33,7 @@ export class UsersService {
 
   //TODO login user
   loginUser(user: any): Observable<any> {
-    return this._http.post(this.urlApi + 'home-user', user);
+    return this._http.post(this.urlApi + 'home-user', user).pipe(shareReplay());
   }
 
   //TODO obtener usuario por id

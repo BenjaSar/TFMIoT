@@ -1,3 +1,11 @@
+/*
+Author:FS
+# Date: 2022
+# Embedded Systems Laboratory FIUBA
+# License: MIT
+#################################################################################
+*/
+
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';

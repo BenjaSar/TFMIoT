@@ -1,3 +1,11 @@
+/*
+Author:FS
+# Date: 2022
+# Embedded Systems Laboratory FIUBA
+# License: MIT
+#################################################################################
+*/
+
 import { Component, ContentChild, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IonInput } from '@ionic/angular';

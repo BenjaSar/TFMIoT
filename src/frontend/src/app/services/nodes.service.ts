@@ -1,3 +1,10 @@
+/*
+Author:FS
+# Date: 2022
+# Embedded Systems Laboratory FIUBA
+# License: MIT
+#################################################################################
+*/
 import { Injectable } from '@angular/core';
 import { Node } from '../model/nodes';
 import { HttpClient, HttpHeaders } from '@angular/common/http';

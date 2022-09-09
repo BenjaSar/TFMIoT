@@ -36,8 +36,8 @@ routerUsers.get("/", function (req, response) {
 });
 
 //Get user by id
-routerUsers.get("/:idUsers", function (req, response) {
-  const idUsers = parseInt(req.params.idUsers);
+routerUsers.get("/:id", function (req, response) {
+  const idUsers = parseInt(req.params.id);
   pg.query(getUserByID, [idUsers], (err, results) => {
     if (err) {
       console.log(err);
@@ -77,7 +77,9 @@ routerUsers.post("/create", function (request, response) {
   }*/
 
   const hashPassword = Helper.hashPassword(request.body.usersPasswords);
-
+  const hashConfirmPassword = Helper.hashPassword(
+    request.body.usersConfirmPasswords
+  );
   pg.query(
     createUser,
     [
@@ -86,7 +88,7 @@ routerUsers.post("/create", function (request, response) {
       userPosition,
       usersEmail,
       (usersPasswords = hashPassword),
-      usersConfirmPasswords,
+      (usersConfirmPasswords = hashConfirmPassword),
     ],
     (err, results) => {
       if (err) {

@@ -1,3 +1,10 @@
+/*
+Author:FS
+# Date: 2022
+# Embedded Systems Laboratory FIUBA
+# License: MIT
+#################################################################################
+*/
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
