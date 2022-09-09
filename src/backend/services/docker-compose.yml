@@ -1,7 +1,6 @@
 #################################################################################
 # Author:FS
-# Date: 2021
-# Copyright: Agustin Bassi (https://github.com/agustinBassi/mq-connection)
+# Date: 2022
 # License: MIT
 # Project: MQTT Broker
 # Brief: These containers act as a MQTT broker for HBD Final Project.

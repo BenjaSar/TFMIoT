@@ -1,3 +1,9 @@
+/**
+ * Author: FS
+ * Date: 2022
+ * EMBEDDED SYSTEMS LABORATORY -FIUBA
+ */
+
 const jwt = require("jsonwebtoken");
 
 function authenticateToken(req, res, next) {

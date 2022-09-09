@@ -1,3 +1,11 @@
+/*
+Author:FS
+# Date: 2022
+# Embedded Systems Laboratory FIUBA
+# License: MIT
+#################################################################################
+*/
+
 import {
   Component,
   ContentChild,
